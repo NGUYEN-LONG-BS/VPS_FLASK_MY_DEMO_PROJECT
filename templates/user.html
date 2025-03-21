@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}User Page{% endblock %}
+{% block content %}
+    <h2>This is User page</h2>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <p>Đây là trang user của: {{ var_name }}</p>
+    <div style="margin-left: 50px;">
+        <!-- <form action="#" method="post"> -->
+        <form action="{{ url_for('f_user') }}" method="post">   <!-- Hai cách đều được-->
+            <label for="username">Email:</label>
+            <input type="email" name="email" placeholder="Enter email..." value="{{email if email}}"></input>
+            <button style="background-color: blueviolet; color: white;" type="submit">Submit</button>            
+        </form>
+    </div>
+{% endblock %}

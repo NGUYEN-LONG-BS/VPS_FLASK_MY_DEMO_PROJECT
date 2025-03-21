@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <H1>Hello templates Anh Nè BS, đây là biến được truyền vào: {{ var_name }}</H1>
+    {% for x in range(10) %}
+        {% if x % 3 == 0 %}
+            <H2>số chia hết cho 3: {{ x }}</H2>
+        {% else %}
+            <H2 style="color: purple;">số không chia hết cho 3: {{ x }}</H2>
+        {% endif %}
+    {% endfor %}
+    
+    {% for x in cars %}
+        <H2>Hãng xe: {{ x }}</H2>
+    {% endfor %}
+</body>
+</html>
