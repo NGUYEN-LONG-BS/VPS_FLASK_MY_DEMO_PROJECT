@@ -6,6 +6,8 @@ from os import path
 
 from flask import Flask, render_template, request
 import pandas as pd
+import matplotlib  # Import matplotlib trước
+matplotlib.use('Agg')  # Chuyển sang chế độ không GUI
 import matplotlib.pyplot as plt
 import io
 import base64
