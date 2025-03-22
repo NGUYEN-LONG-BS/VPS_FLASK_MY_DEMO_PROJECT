@@ -1,13 +1,14 @@
-# https://www.youtube.com/watch?v=0jYoqAXjry0&t=5s
-# LẬP TRÌNH WEB FLASK-PYTHON #8: TỔNG QUAN ORM, SQLAlchemy
-# https://www.youtube.com/watch?v=krLPOgN1Kg0&list=PLFyAEmibWSQCc60nNQByzmtbMjk3fGyIK&index=10
-# LẬP TRÌNH WEB FLASK-PYTHON #9: CREATE DATABASE SQLAlchemy
-
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 import os
 from os import path
+
+from flask import Flask, render_template, request
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "anhnebs"
@@ -17,6 +18,9 @@ basedir = path.abspath(path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{path.join(basedir, 'users.db')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.permanent_session_lifetime = timedelta(minutes=1)
+
+def create_app():
+    return app
 
 db = SQLAlchemy(app)
 
@@ -89,7 +93,41 @@ def logout():
     session.pop('username', None)
     flash('You logged out', 'info')
     return redirect(url_for('login'))
+
+def plot_line_chart(df):
+    x_values = df.iloc[:, 0]
+    y_values = df.iloc[:, 1].astype(float)
     
+    fig, ax = plt.subplots()
+    ax.plot(x_values, y_values, marker='o', linestyle='-', color='b')
+    
+    ax.set_xlabel("Trục X")
+    ax.set_ylabel("Trục Y")
+    ax.set_title("Biểu đồ Line Chart từ Excel")
+    
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode()
+    plt.close()
+    
+    return plot_url
+
+@app.route('/mychart', methods=['GET', 'POST'])
+def mychart():
+    plot_url = None
+    df_html = None
+    
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            df = pd.read_excel(file)
+            if len(df.columns) >= 2:
+                plot_url = plot_line_chart(df)
+                df_html = df.to_html(classes='table table-striped', index=False)
+    
+    return render_template('mychart.html', plot_url=plot_url, df_html=df_html)
+
 if __name__ == '__main__':
     with app.app_context():  # Tạo application context
         # if not path.exists("users.db"):
@@ -97,4 +135,4 @@ if __name__ == '__main__':
             # db.create_all(app = app)
             db.create_all()
             print("Database created")
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
