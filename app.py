@@ -130,6 +130,19 @@ def mychart():
     
     return render_template('mychart.html', plot_url=plot_url, df_html=df_html)
 
+@app.route('/danh_muc_san_pham')
+def danh_muc_san_pham():
+    # Tạo danh sách sản phẩm
+    products = []
+    for i in range(1, 201):  # Giới hạn số lượng sản phẩm hiển thị, ví dụ 20 sản phẩm
+        products.append({
+            'id': i,
+            'name': f'Sản phẩm {i}',
+            'description': f'Mô tả ngắn về sản phẩm {i}',
+            'image': f'static/img/product-{i}.jpg',  # Đường dẫn hình ảnh
+        })
+    return render_template("danh_muc_san_pham.html")
+
 if __name__ == '__main__':
     with app.app_context():  # Tạo application context
         # if not path.exists("users.db"):
