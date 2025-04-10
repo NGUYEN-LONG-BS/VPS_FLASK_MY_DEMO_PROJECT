@@ -143,6 +143,10 @@ def danh_muc_san_pham():
         })
     return render_template("danh_muc_san_pham.html")
 
+@app.route('/start_dijango_with_docker_step_01')
+def huong_dan_start_dijango_with_docker():
+    return render_template("start_dijango_with_docker_step_01.html")
+
 if __name__ == '__main__':
     with app.app_context():  # Tạo application context
         # if not path.exists("users.db"):
