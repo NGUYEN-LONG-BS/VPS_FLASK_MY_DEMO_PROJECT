@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build và Chạy Docker Container từ Dockerfile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        code {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-family: Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hướng Dẫn Build và Chạy Docker Container từ Dockerfile</h1>
+
+    <h2>Bước 1: Kiểm tra Dockerfile</h2>
+    <p>Đảm bảo rằng file <code>Dockerfile</code> của bạn đã được lưu đúng tên và ở đúng thư mục mà bạn muốn sử dụng. Tên của file phải là <code>Dockerfile</code> mà không có đuôi <code>.txt</code> hay bất kỳ đuôi nào khác.</p>
+
+    <h2>Bước 2: Mở Command Prompt hoặc Terminal</h2>
+    <ol>
+        <li><strong>Mở Command Prompt</strong> (Windows) hoặc <strong>Terminal</strong> (macOS, Linux).</li>
+        <li>Điều hướng đến thư mục chứa file <code>Dockerfile</code> bằng lệnh <code>cd</code>. Ví dụ, nếu file <code>Dockerfile</code> của bạn nằm trong thư mục <code>C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG</code>, bạn gõ:</li>
+        <pre><code>cd C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG</code></pre>
+        <p><strong>Lưu ý:</strong> Hãy chắc chắn rằng bạn đang đứng trong thư mục chứa <code>Dockerfile</code>.</p>
+    </ol>
+
+    <h2>Bước 3: Xây dựng Docker Image từ Dockerfile</h2>
+    <p>Sử dụng lệnh sau để <strong>build Docker image</strong> từ Dockerfile:</p>
+    <pre><code>docker build -t my-django-app .</code></pre>
+    <p><strong>Giải thích:</strong></p>
+    <ul>
+        <li><code>-t my-django-app</code>: Đây là tên bạn muốn đặt cho Docker image. Bạn có thể thay đổi "my-django-app" thành tên tùy ý của mình.</li>
+        <li><code>.</code>: Dấu chấm cuối cùng chỉ định rằng Dockerfile nằm trong thư mục hiện tại.</li>
+    </ul>
+    <p>Lệnh trên sẽ đọc Dockerfile trong thư mục hiện tại và xây dựng một Docker image từ đó. Quá trình này có thể mất một chút thời gian tùy thuộc vào các bước trong Dockerfile và tốc độ mạng (đặc biệt là khi tải các image từ Docker Hub).</p>
+
+    <h2>Bước 4: Kiểm tra Docker Image đã được tạo thành công</h2>
+    <p>Sau khi build xong, bạn có thể kiểm tra xem image của mình đã được tạo ra hay chưa bằng lệnh:</p>
+    <pre><code>docker images</code></pre>
+    <p>Lệnh này sẽ liệt kê tất cả các Docker images trên hệ thống của bạn. Tìm tên của image bạn vừa tạo trong danh sách.</p>
+
+    <h2>Bước 5: Chạy Docker Container</h2>
+    <p>Khi Docker image đã được tạo thành công, bạn có thể <strong>chạy container</strong> từ image đó bằng lệnh sau:</p>
+    <pre><code>docker run -p 8000:8000 my-django-app</code></pre>
+    <p><strong>Giải thích:</strong></p>
+    <ul>
+        <li><code>-p 8000:8000</code>: Điều này sẽ map cổng 8000 trên container tới cổng 8000 trên máy tính của bạn. Bạn có thể truy cập ứng dụng Django của mình qua <code>http://localhost:8000</code> trong trình duyệt.</li>
+        <li><code>my-django-app</code>: Đây là tên của Docker image bạn đã tạo.</li>
+    </ul>
+
+    <h2>Bước 6: Truy cập ứng dụng Django</h2>
+    <p>Mở trình duyệt web và nhập vào URL sau:</p>
+    <pre><code>http://localhost:8000</code></pre>
+    <p>Bạn sẽ thấy trang chào mừng mặc định của Django nếu mọi thứ đã được cấu hình chính xác.</p>
+
+    <h2>Bước 7: Quản lý Container</h2>
+    <ul>
+        <li><strong>Để dừng container:</strong> Bạn có thể sử dụng lệnh:
+            <pre><code>docker stop &lt;container_id&gt;</code></pre>
+            Bạn có thể tìm ID của container bằng cách sử dụng lệnh <code>docker ps</code> để liệt kê các container đang chạy.
+        </li>
+        <li><strong>Để xóa container:</strong> Sau khi dừng container, bạn có thể xóa container bằng lệnh:
+            <pre><code>docker rm &lt;container_id&gt;</code></pre>
+        </li>
+    </ul>
+
+    <h2>Tóm tắt</h2>
+    <ul>
+        <li>Tạo và chỉnh sửa Dockerfile xong, bạn chỉ cần <strong>build Docker image</strong> bằng lệnh <code>docker build</code>.</li>
+        <li>Sau đó, <strong>chạy container</strong> từ image bằng lệnh <code>docker run</code>.</li>
+        <li>Kiểm tra ứng dụng Django trong trình duyệt qua <code>http://localhost:8000</code>.</li>
+    </ul>
+    <p>Sau khi làm các bước trên, ứng dụng Django của bạn sẽ chạy trong container Docker. Nếu có thêm vấn đề nào, đừng ngần ngại hỏi mình!</p>
+</body>
+</html>

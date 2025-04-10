@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo file .gitignore trên Windows</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        code {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-family: Consolas, monospace;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Các bước tạo file .gitignore trên Windows</h1>
+    <p>Để tạo một file <code>.gitignore</code> trên Windows, bạn có thể làm theo các bước sau:</p>
+
+    <h2>Bước 1: Tạo file .gitignore trong Command Prompt</h2>
+    <ol>
+        <li>Mở <strong>Command Prompt</strong> hoặc <strong>PowerShell</strong>.</li>
+        <li>Điều hướng đến thư mục dự án của bạn:</li>
+        <pre><code>cd C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG\myproject</code></pre>
+        <li>Chạy lệnh để tạo file <code>.gitignore</code> trống:</li>
+        <pre><code>echo.>.gitignore</code></pre>
+    </ol>
+
+    <h2>Bước 2: Mở và chỉnh sửa file .gitignore</h2>
+    <p>Tiếp theo, mở file <code>.gitignore</code> với <strong>Notepad</strong> hoặc trình soạn thảo văn bản bất kỳ:</p>
+    <pre><code>notepad .gitignore</code></pre>
+    <p>Sau đó, dán nội dung sau vào file <code>.gitignore</code>:</p>
+
+    <pre><code># Các file Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+
+# Thư mục môi trường ảo (virtual environment)
+venv/
+env/
+.venv/
+.virtualenv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Thư mục Django
+db.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+*.db
+*.sqlite3
+
+# Thư mục media
+/media/
+
+# Thư mục static
+/static/
+
+# Các file cấu hình của hệ thống
+.idea/
+.vscode/
+
+# Các file của OS
+.DS_Store
+Thumbs.db
+
+# Thư mục của các công cụ quản lý dự án (IDE, editor)
+*.swp
+*.swo
+
+# Các file cài đặt của editor như Sublime Text, Atom, etc.
+*.sublime-workspace
+*.sublime-project
+</code></pre>
+
+    <h2>Bước 3: Lưu file và commit vào Git</h2>
+    <ol>
+        <li>Sau khi chỉnh sửa xong, lưu file <code>.gitignore</code>.</li>
+        <li>Thêm file vào Git và commit thay đổi:</li>
+        <pre><code>git add .gitignore</code></pre>
+        <pre><code>git commit -m "Add .gitignore file"</code></pre>
+    </ol>
+    <p>Vậy là bạn đã tạo và thêm file <code>.gitignore</code> vào dự án Git của mình.</p>
+</body>
+</html>

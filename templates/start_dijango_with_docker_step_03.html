@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Lỗi Docker - Kho Lưu Trữ Cũ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        code {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-family: Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hướng Dẫn Sửa Lỗi Docker: Kho Lưu Trữ Cũ trong Debian</h1>
+
+    <p>Lỗi bạn gặp phải xảy ra khi **Docker** cố gắng cài đặt các gói hệ thống (như <code>build-essential</code>, <code>python3-dev</code>, và <code>libpq-dev</code>) từ kho lưu trữ của Debian, nhưng các kho lưu trữ này đã thay đổi từ <code>stable</code> thành <code>oldoldstable</code>. Điều này xảy ra vì phiên bản của Debian trong image <code>continuumio/anaconda3:2020.11</code> là một phiên bản cũ.</p>
+
+    <h2>Giải pháp 1: Thay đổi Kho Lưu Trữ (Repositories)</h2>
+    <p>Một cách đơn giản để giải quyết vấn đề này là thay đổi kho lưu trữ trong file <code>/etc/apt/sources.list</code> để sử dụng kho lưu trữ cũ hơn (lâu dài). Dưới đây là cách bạn có thể thay đổi Dockerfile:</p>
+    
+    <pre><code>
+# Sử dụng Anaconda image có sẵn với Python 3.8
+FROM continuumio/anaconda3:2020.11
+
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Cập nhật kho lưu trữ trước khi cài đặt các gói
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -y \
+    build-essential \
+    python3-dev \
+    libpq-dev
+
+# Cài đặt Python 3.8 trong môi trường conda
+RUN conda install python=3.8
+
+# Cài đặt Django và các thư viện cần thiết
+RUN conda install -c conda-forge django
+
+# Copy requirements.txt vào container (sau khi tạo dự án Django)
+COPY requirements.txt /app/
+
+# Cài đặt các phụ thuộc từ requirements.txt
+RUN pip install -r requirements.txt
+
+# Copy toàn bộ mã nguồn vào container
+COPY . /app/
+
+# Cổng mà Django sẽ sử dụng
+EXPOSE 8000
+
+# Lệnh chạy Django server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    </code></pre>
+
+    <h3>Giải thích:</h3>
+    <ul>
+        <li><code>sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list</code>: Lệnh này sẽ thay đổi kho lưu trữ chính của Debian từ <code>deb.debian.org</code> thành <code>archive.debian.org</code>, kho lưu trữ lâu dài cho các phiên bản cũ của Debian.</li>
+        <li>Cập nhật lại kho lưu trữ và cài đặt các gói cần thiết sau đó.</li>
+    </ul>
+
+    <h2>Giải pháp 2: Sử dụng Image Python Mới Hơn</h2>
+    <p>Thay vì sử dụng image <code>continuumio/anaconda3:2020.11</code>, bạn có thể chuyển sang sử dụng image Python chính thức từ Docker Hub. Image này sẽ sử dụng phiên bản mới của Debian, giúp tránh các vấn đề liên quan đến kho lưu trữ cũ.</p>
+
+    <pre><code>
+# Thay thế image Anaconda cũ bằng image Python chính thức mới hơn
+FROM python:3.8-slim
+
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Cài đặt các phụ thuộc hệ thống (nếu cần)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    libpq-dev
+
+# Cài đặt Django và các thư viện cần thiết từ conda-forge
+RUN pip install django
+
+# Copy requirements.txt vào container (sau khi tạo dự án Django)
+COPY requirements.txt /app/
+
+# Cài đặt các phụ thuộc từ requirements.txt bằng pip
+RUN pip install -r requirements.txt
+
+# Copy toàn bộ mã nguồn vào container
+COPY . /app/
+
+# Cổng mà Django sẽ sử dụng
+EXPOSE 8000
+
+# Lệnh chạy Django server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    </code></pre>
+
+    <h3>Giải thích:</h3>
+    <ul>
+        <li>Sử dụng image <code>python:3.8-slim</code> thay vì image Anaconda cũ. Image này sử dụng Python 3.8 với một phiên bản Debian mới hơn, giúp tránh gặp phải các lỗi kho lưu trữ cũ.</li>
+        <li>Bạn sẽ không cần phải cài đặt <code>conda</code> vì image Python chính thức đã có Python và các thư viện pip có sẵn. Cài đặt các thư viện qua pip sẽ dễ dàng hơn.</li>
+    </ul>
+
+    <h2>Giải pháp 3: Thêm Cờ <code>--allow-releaseinfo-change</code></h2>
+    <p>Thêm cờ <code>--allow-releaseinfo-change</code> vào lệnh <code>apt-get update</code>. Cách này giúp bỏ qua lỗi kho lưu trữ và tiếp tục cài đặt các gói.</p>
+
+    <pre><code>
+# Sử dụng Anaconda image có sẵn với Python 3.8
+FROM continuumio/anaconda3:2020.11
+
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Cập nhật kho lưu trữ và bỏ qua thay đổi trong thông tin kho lưu trữ
+RUN apt-get update --allow-releaseinfo-change && apt-get install -y \
+    build-essential \
+    python3-dev \
+    libpq-dev
+
+# Cài đặt Python 3.8 trong môi trường conda
+RUN conda install python=3.8
+
+# Cài đặt Django và các thư viện cần thiết
+RUN conda install -c conda-forge django
+
+# Copy requirements.txt vào container (sau khi tạo dự án Django)
+COPY requirements.txt /app/
+
+# Cài đặt các phụ thuộc từ requirements.txt
+RUN pip install -r requirements.txt
+
+# Copy toàn bộ mã nguồn vào container
+COPY . /app/
+
+# Cổng mà Django sẽ sử dụng
+EXPOSE 8000
+
+# Lệnh chạy Django server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    </code></pre>
+
+    <h3>Giải thích:</h3>
+    <ul>
+        <li>Thêm <code>--allow-releaseinfo-change</code> vào lệnh <code>apt-get update</code> để bỏ qua thay đổi thông tin kho lưu trữ, giúp tiếp tục quá trình cài đặt mà không gặp lỗi.</li>
+    </ul>
+
+    <h2>Tóm Tắt</h2>
+    <ul>
+        <li><strong>Giải pháp 1</strong>: Thay đổi kho lưu trữ trong Dockerfile để sử dụng kho lưu trữ lâu dài cho các phiên bản cũ.</li>
+        <li><strong>Giải pháp 2</strong>: Sử dụng một image Python mới hơn (ví dụ: <code>python:3.8-slim</code>), giúp tránh các vấn đề liên quan đến kho lưu trữ cũ.</li>
+        <li><strong>Giải pháp 3</strong>: Thêm cờ <code>--allow-releaseinfo-change</code> để bỏ qua thay đổi thông tin kho lưu trữ.</li>
+    </ul>
+
+</body>
+</html>

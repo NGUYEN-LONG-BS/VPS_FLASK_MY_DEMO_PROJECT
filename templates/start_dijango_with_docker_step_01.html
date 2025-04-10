@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Docker Container và Dự Án Django</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        code {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-family: Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tạo Docker Container và Dự Án Django</h1>
+
+    <h2>Bước 1: Cài đặt Docker Desktop</h2>
+    <p>Trước tiên, nếu bạn chưa có Docker Desktop, bạn cần cài đặt nó từ <a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker Desktop</a> và khởi động Docker trên máy tính của bạn.</p>
+
+    <h2>Bước 2: Tạo Dockerfile</h2>
+
+    <ol>
+        <li><strong>Tạo thư mục dự án:</strong>
+            <pre><code>mkdir django-docker && cd django-docker</code></pre>
+        </li>
+        <li><strong>Tạo Dockerfile:</strong> Trong thư mục này, tạo một file có tên <code>Dockerfile</code> và thêm vào các lệnh sau:</li>
+        <pre><code># Sử dụng Anaconda image có sẵn với Python 3.8
+FROM continuumio/anaconda3:2020.11
+
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Cài đặt các phụ thuộc hệ thống (nếu cần)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    libpq-dev
+
+# Cài đặt các thư viện trong môi trường conda (nếu cần)
+RUN conda install python=3.8
+
+# Cài đặt Django và các thư viện cần thiết
+RUN conda install -c conda-forge django
+
+# Copy requirements.txt vào container (sau khi tạo dự án Django)
+COPY requirements.txt /app/
+
+# Cài đặt các phụ thuộc từ requirements.txt
+RUN pip install -r requirements.txt
+
+# Copy mã nguồn vào container
+COPY . /app/
+
+# Cổng mà Django sẽ sử dụng
+EXPOSE 8000
+
+# Lệnh chạy Django server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]</code></pre>
+    </ol>
+    <p>Bạn có thể <a href="start_dijango_with_docker_step_02.html">click vào đây</a>, nơi bạn sẽ tìm thấy các bước chi tiết về cách build và chạy Docker container.</p>
+    <p>Nếu gặp lỗi, thì xem cách sửa ở đây <a href="start_dijango_with_docker_step_03.html">click vào đây</a></p>
+
+    <h2>Bước 3: Tạo Dự Án Django</h2>
+    <ol>
+        <li><strong>Tạo một môi trường ảo (nếu cần thiết):</strong>
+            <pre><code>conda create -n myenv python=3.8
+conda activate myenv</code></pre>
+        </li>
+        <li><strong>Cài đặt Django và các thư viện cần thiết:</strong>
+            <pre><code>Django==3.1.7
+psycopg2-binary</code></pre>
+        </li>
+        <li><strong>Khởi tạo một dự án Django:</strong>
+            <pre><code>django-admin startproject myproject</code></pre>
+        </li>
+    </ol>
+
+    <h2>Bước 4: Xây dựng Docker Image</h2>
+    <ol>
+        <li><strong>Xây dựng Docker image:</strong>
+            <pre><code>docker build -t my-django-app .</code></pre>
+        </li>
+        <li><strong>Kiểm tra image:</strong>
+            <pre><code>docker images</code></pre>
+        </li>
+    </ol>
+
+    <h2>Bước 5: Chạy Container</h2>
+    <ol>
+        <li><strong>Chạy container:</strong>
+            <pre><code>docker run -p 8000:8000 my-django-app</code></pre>
+        </li>
+        <li><strong>Truy cập ứng dụng Django:</strong>
+            <p>Mở trình duyệt và truy cập <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>. Bạn sẽ thấy trang mặc định của Django.</p>
+        </li>
+    </ol>
+
+    <h2>Bước 6: Tạo và Cấu Hình Cơ Sở Dữ Liệu</h2>
+    <ol>
+        <li><strong>Cài đặt PostgreSQL trong Docker (nếu cần):</strong>
+            <p>Thực hiện cấu hình cơ sở dữ liệu trong <code>settings.py</code> và chạy các lệnh Docker để thiết lập PostgreSQL.</p>
+        </li>
+        <li><strong>Tạo bảng cơ sở dữ liệu:</strong>
+            <pre><code>docker exec -it <container_id> bash
+python manage.py migrate</code></pre>
+        </li>
+    </ol>
+
+    <h2>Bước 7: Tạo Môi Trường và Cập Nhật Dockerfile</h2>
+    <p>Khi bạn đã thiết lập xong, bạn có thể chỉnh sửa <code>Dockerfile</code> hoặc các file yêu cầu để thêm các tính năng mới vào dự án Django của mình. Mỗi lần thay đổi, bạn sẽ cần phải <strong>build lại Docker image</strong> bằng lệnh <code>docker build</code> và <strong>chạy lại container</strong>.</p>
+
+    <h2>Tóm tắt</h2>
+    <p>Với cách này, Docker giúp bạn tạo ra một môi trường tách biệt, dễ dàng triển khai và kiểm soát các phụ thuộc cho dự án Django của bạn, trong khi Anaconda quản lý môi trường Python và các thư viện cần thiết. Docker đảm bảo rằng mọi thứ từ môi trường cho đến ứng dụng Django đều được cài đặt và chạy đồng nhất trên các máy khác nhau, giảm thiểu các vấn đề tương thích.</p>
+
+    <p>Sau cùng, cách tạo file gitignore để đừng đẩy hết lên github <a href="start_dijango_with_docker_step_04.html">click vào đây</a></p>
+    <p>Nếu bạn gặp bất kỳ vấn đề gì khi thực hiện các bước này, đừng ngần ngại yêu cầu thêm sự hỗ trợ nhé!</p>
+</body>
+</html>
