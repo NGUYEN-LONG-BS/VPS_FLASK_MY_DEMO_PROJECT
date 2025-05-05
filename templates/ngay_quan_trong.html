@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhật Ký Ngày</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .entry-list {
+            margin-top: 20px;
+        }
+        .entry-item {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nhật Ký Ngày</h1>
+    <div class="form-container">
+        <label for="dateInput">Chọn ngày:</label>
+        <input type="date" id="dateInput">
+        <select id="calendarType">
+            <option value="solar">Dương Lịch</option>
+            <option value="lunar">Âm Lịch</option>
+        </select>
+        <input type="text" id="noteInput" placeholder="Ghi chú...">
+        <button onclick="addEntry()">Thêm</button>
+    </div>
+
+    <div class="entry-list">
+        <h2>Các mục nhật ký</h2>
+        <ul id="entries"></ul>
+    </div>
+
+    <script>
+        const entries = [
+            { date: new Date('2007-04-05'), calendarType: 'lunar', note: 'Giỗ bà Nội' },
+            { date: new Date('1952-07-23'), calendarType: 'lunar', note: 'Giỗ ông Nội' }
+        ];
+
+        function addEntry() {
+            const dateInput = document.getElementById('dateInput').value;
+            const calendarType = document.getElementById('calendarType').value;
+            const noteInput = document.getElementById('noteInput').value;
+            const entryDate = new Date(dateInput);
+
+            if (!dateInput || !noteInput) {
+                alert("Vui lòng nhập đầy đủ thông tin.");
+                return;
+            }
+
+            // Lưu thông tin nhập vào
+            const entry = {
+                date: entryDate,
+                calendarType: calendarType,
+                note: noteInput
+            };
+
+            entries.push(entry);
+
+            // Sắp xếp danh sách theo ngày tháng tăng dần
+            entries.sort((a, b) => a.date - b.date);
+
+            // Hiển thị lại danh sách
+            displayEntries();
+        }
+
+        function displayEntries() {
+            const entriesList = document.getElementById('entries');
+            entriesList.innerHTML = '';
+
+            entries.forEach(entry => {
+                const entryItem = document.createElement('li');
+                entryItem.classList.add('entry-item');
+                const dateStr = entry.date.toLocaleDateString('vi-VN');
+                const calendar = entry.calendarType === 'solar' ? 'Dương Lịch' : 'Âm Lịch';
+                entryItem.innerHTML = `<strong>${dateStr}</strong> (${calendar}): ${entry.note}`;
+                entriesList.appendChild(entryItem);
+            });
+        }
+
+        // Hiển thị ngay danh sách khi trang được tải
+        window.onload = displayEntries;
+    </script>
+</body>
+</html>

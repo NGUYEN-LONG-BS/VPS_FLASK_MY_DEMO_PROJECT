@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Hooks Cheat Sheet</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Prism CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e293b;
+      font-weight: 700;
+      margin: 2.5rem 0;
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      color: #1e293b;
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      padding: 0 1.5rem;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      background-color: #ffffff;
+      border-bottom: none;
+      padding: 1.5rem;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .code-block {
+      background-color: #1a202c;
+      padding: 1.25rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      overflow-x: auto;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    /* Tùy chỉnh Prism */
+    .token.keyword {
+      color: #ff79c6;
+    }
+    .token.string {
+      color: #f1fa8c;
+    }
+    .token.number {
+      color: #bd93f9;
+    }
+    .token.function {
+      color: #50fa7b;
+    }
+    .token.comment {
+      color: #6272a4;
+    }
+    .token.operator {
+      color: #8be9fd;
+    }
+    .token.punctuation {
+      color: #f8f8f2;
+    }
+
+    .code-block::before {
+      content: '📋';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    .code-block:hover::before {
+      opacity: 1;
+    }
+
+    .nav-tabs {
+      border-bottom: none;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+
+    .nav-link {
+      color: #64748b;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      margin: 0 0.5rem;
+      font-weight: 500;
+    }
+
+    .nav-link.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .hook-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hook-info i {
+      color: #3b82f6;
+      font-size: 1.5rem;
+    }
+
+    .key-points {
+      background-color: #f1f5f9;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .key-points li {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .key-points li::before {
+      content: '✓';
+      color: #22c55e;
+      font-weight: bold;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+      .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1><i class="fa-brands fa-react me-2"></i> React Hooks Cheat Sheet</h1>
+
+  <div class="container">
+    <ul class="nav nav-tabs" id="hookTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link active" 
+        id="useState-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useState" 
+        type="button" 
+        role="tab">useState</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="useEffect-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useEffect" 
+        type="button" 
+        role="tab">useEffect</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="useContext-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useContext" 
+        type="button" 
+        role="tab">useContext</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="useReducer-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useReducer" 
+        type="button" 
+        role="tab">useReducer</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="useCallback-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useCallback" 
+        type="button" 
+        role="tab">useCallback</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="useMemo-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useMemo" 
+        type="button" 
+        role="tab">useMemo</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="useRef-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useRef" 
+        type="button" 
+        role="tab">useRef</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button 
+        class="nav-link" 
+        id="useLayoutEffect-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#useLayoutEffect" 
+        type="button" 
+        role="tab">useLayoutEffect</button>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="hookTabsContent">
+      <div class="tab-pane fade show active" id="useState" role="tabpanel">
+        <!-- useState -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-circle-notch me-2"></i>useState</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <p>Hook cơ bản để quản lý trạng thái trong component.</p>
+            </div>
+            <pre class="code-block language-jsx"><code>
+import { useState } from 'react';
+
+const [state, setState] = useState(initialValue);
+setState(newValue);
+
+// Example:
+const [count, setCount] = useState(0);
+const increment = () => setCount(count + 1);
+            </code></pre>
+            <div class="key-points">
+              <ul>
+                <li><b>useState(initialValue):</b> Khởi tạo state với giá trị ban đầu.</li>
+                <li><b>state:</b> Giá trị trạng thái hiện tại.</li>
+                <li><b>setState:</b> Hàm cập nhật trạng thái.</li>
+              </ul>
+              <ul>
+                <p><b>LƯU Ý:</b></p>
+                <li>Component được re-render sau khi 'setState'.</li>
+                <li>Inittial state chỉ dùng cho lần đầu.</li>
+                <li>Set state với callback?.</li>
+                <li>Initial state với callback?.</li>
+                <li>Set state là thay thế state với giá trị mới.</li>
+              </ul>
+              <ul>
+                <p><b>Ứng dụng:</b></p>
+                <li>Random number.</li>
+                <li>Two-way binding.</li>
+                <li>Todo list.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="useEffect" role="tabpanel">
+        <!-- useEffect -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-bolt me-2"></i>useEffect</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <div>
+                <p>Trong React, hook useEffect được sử dụng để xử lý các side effects (như gọi API, cập nhật DOM, hoặc thiết lập sự kiện).</p>
+                <P>Cách bạn truyền tham số thứ hai (dependency array) vào useEffect sẽ quyết định khi nào callback được chạy. Dưới đây là sự phân biệt rõ ràng giữa ba trường hợp bạn liệt kê: useEffect(callback), useEffect(callback, []), và useEffect(callback, [deps]).</P>
+              </div>
+            </div>
+
+            <div class="key-points">
+              <ul>
+                <P><b>1. useEffect(callback):</b></P>
+                <li><b>Ý nghĩa:</b> Không có dependency array.</li>
+                <li><b>Hành vi:</b> Callback sẽ chạy sau mỗi lần render của component (bao gồm cả lần render đầu tiên).</li>
+                <li><b>Khi nào dùng:</b> Khi bạn muốn side effect chạy mỗi khi component re-render, bất kể nguyên nhân gì (thay đổi state, props, hoặc bất kỳ cập nhật nào).</li>
+                <li><b>Ví dụ:</b></li>
+                <pre class="code-block language-jsx"><code>
+import { useEffect } from 'react';
+function MyComponent() {
+  useEffect(() => {
+    console.log('Effect ran after every render');
+  });
+  return &lt;div&gt;Hello&lt;/div&gt;;
+}
+                </code></pre>
+              </ul>
+              <ul>
+                <p><b>LƯU Ý:</b></p>
+                <li>Có thể gây ra vấn đề hiệu suất nếu side effect chạy nhiều lần gây tốn tài nguyên (ví dụ: gọi API liên tục).</li>
+                <li>Ít được sử dụng trong thực tế vì thường cần kiểm soát khi nào effect chạy.</li>
+              </ul>
+            </div>
+
+            <div class="key-points">
+              <ul>
+                <P><b>2. useEffect(callback, []):</b></P>
+                <li><b>Ý nghĩa:</b> Dependency array rỗng.</li>
+                <li><b>Hành vi:</b> Callback chỉ chạy một lần duy nhất khi component mount (được thêm vào DOM).</li>
+                <li><b>Khi nào dùng:</b> Khi bạn muốn thực hiện side effect chỉ một lần, tương tự như componentDidMount trong class component (ví dụ: gọi API ban đầu, thiết lập sự kiện toàn cục).</li>
+                <li><b>Ví dụ:</b></li>
+                <pre class="code-block language-jsx"><code>
+import { useEffect } from 'react';
+
+function MyComponent() {
+  useEffect(() => {
+    console.log('Effect ran only once on mount');
+    // Ví dụ: gọi API hoặc thiết lập event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup (chạy khi component unmount)
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Mảng rỗng
+  return &lt;div&gt;Hello&lt;/div&gt;;
+}
+                </code></pre>
+              </ul>
+              <ul>
+                <p><b>LƯU Ý:</b></p>
+                <li>Rất phổ biến để thực hiện các tác vụ khởi tạo một lần.</li>
+                <li>Nếu có cleanup function (trả về từ callback), nó sẽ chạy khi component unmount.</li>
+              </ul>
+            </div>
+            
+            <div class="key-points">
+              <ul>
+                <P><b>3. useEffect(callback, [deps]):</b></P>
+                <li><b>Ý nghĩa:</b> Dependency array chứa một hoặc nhiều dependencies (các biến/state/props).</li>
+                <li><b>Hành vi:</b> Callback chạy khi component mount và mỗi khi bất kỳ dependency nào trong mảng thay đổi (so sánh shallow).</li>
+                <li><b>Khi nào dùng:</b> Khi bạn muốn side effect chỉ chạy khi các giá trị cụ thể (dependencies) thay đổi (ví dụ: cập nhật dữ liệu khi state hoặc prop thay đổi).</li>
+                <li><b>Ví dụ:</b></li>
+                <pre class="code-block language-jsx"><code>
+import { useEffect, useState } from 'react';
+
+function MyComponent({ userId }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    console.log('Effect ran because userId changed');
+    // Gọi API dựa trên userId
+    fetch(`/api/user/${userId}`)
+      .then(res => res.json())
+      .then(setData);
+  }, [userId]); // Chạy lại khi userId thay đổi
+
+  return &lt;div&gt;Data: {data?.name}&lt;/div&gt;;
+}
+                </code></pre>
+              </ul>
+              <ul>
+                <p><b>LƯU Ý:</b></p>
+                <li>Chỉ các giá trị được liệt kê trong [deps] mới kích hoạt callback khi thay đổi.</li>
+                <li>Nếu quên liệt kê một dependency mà callback sử dụng, có thể gây lỗi logic (ESLint rule react-hooks/exhaustive-deps sẽ cảnh báo).</li>
+              </ul>
+            </div>
+
+            <div class="key-points">
+              <ul>
+                <P><b>So sánh tổng quan</b></P>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Trường hợp</th>
+                      <th scope="col">Dependency Array</th>
+                      <th scope="col">Khi nào chạy callback?</th>
+                      <th scope="col">Use case điển hình</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>useEffect(callback)</td>
+                      <td>Không có</td>
+                      <td>Sau mỗi render</td>
+                      <td>Theo dõi mọi thay đổi, hiếm dùng</td>
+                    </tr>
+                    <tr>
+                      <td>useEffect(callback, [])</td>
+                      <td>Mảng rỗng ([])</td>
+                      <td>Chỉ một lần khi mount</td>
+                      <td>Khởi tạo ban đầu, thiết lập sự kiện</td>
+                    </tr>
+                    <tr>
+                      <td>useEffect(callback, [deps])</td>
+                      <td>Mảng có dependencies</td>
+                      <td>Khi mount và khi deps thay đổi</td>
+                      <td>Phản ứng với thay đổi của state/props cụ thể</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </ul>
+            </div>
+
+            <div class="key-points">
+              <ul>
+                <P><b>Một số lưu ý chung:</b></P>
+                <li><b>Cleanup:</b> Nếu callback trả về một hàm (cleanup function), hàm này sẽ chạy trước khi effect chạy lại hoặc khi component unmount. Ví dụ:</li>
+                <pre class="code-block language-jsx"><code>
+                  useEffect(() => {
+                    const timer = setInterval(() => console.log('Tick'), 1000);
+                    return () => clearInterval(timer); // Cleanup
+                  }, []);
+                </code></pre>
+                <li><b>Hiệu suất:</b> Tránh lạm dụng useEffect không có dependency array vì có thể gây render không cần thiết. Luôn xác định dependencies rõ ràng.</li>
+                <li><b>Debug:</b> Nếu effect chạy không như mong muốn, kiểm tra dependencies trong mảng [deps] và đảm bảo chúng được liệt kê đầy đủ.</li>
+                <li><b>Ví dụ minh họa cả 3 trường hợp:</b></li>
+                <pre class="code-block language-jsx"><code>
+import { useEffect, useState } from 'react';
+
+function ExampleComponent({ userId }) {
+  const [count, setCount] = useState(0);
+
+  // Trường hợp 1: Chạy sau mỗi render
+  useEffect(() => {
+    console.log('This runs after EVERY render');
+  });
+
+  // Trường hợp 2: Chạy chỉ một lần khi mount
+  useEffect(() => {
+    console.log('This runs ONCE on mount');
+    return () => console.log('Cleanup on unmount');
+  }, []);
+
+  // Trường hợp 3: Chạy khi userId hoặc count thay đổi
+  useEffect(() => {
+    console.log('This runs when userId or count changes');
+  }, [userId, count]);
+
+  return (
+    &lt;div&gt;
+      &lt;button&gt; onClick={() => setCount(count + 1)}>Increment: {count}&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+                </code></pre>
+              </ul>
+              <ul>
+                <p><b>Kết luận:</b></p>
+                <li>Dùng <b>useEffect(callback)</b> khi cần theo dõi mọi render (hiếm).</li>
+                <li>Dùng <b>useEffect(callback, [])</b> cho tác vụ chạy một lần khi mount (phổ biến).</li>
+                <li>Dùng <b>useEffect(callback, [deps])</b> để phản ứng với thay đổi cụ thể của state/props (phổ biến nhất).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-pane fade" id="useContext" role="tabpanel">
+        <!-- useContext -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-network-wired me-2"></i>useContext</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <p>Truy cập giá trị Context mà không cần props drilling.</p>
+            </div>
+            <pre class="code-block language-jsx"><code>
+import { useContext } from 'react';
+
+const MyContext = React.createContext();
+const value = useContext(MyContext);
+            </code></pre>
+            <div class="key-points">
+              <ul>
+                <li><b>useContext(Context):</b> Trả về giá trị hiện tại của Context.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="useReducer" role="tabpanel">
+        <!-- useReducer -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-cogs me-2"></i>useReducer</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <p>Quản lý trạng thái phức tạp, tương tự Redux.</p>
+            </div>
+            <pre class="code-block language-jsx"><code>
+import { useReducer } from 'react';
+
+const initialState = { count: 0 };
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'increment': return { count: state.count + 1 };
+    default: return state;
+  }
+};
+
+const [state, dispatch] = useReducer(reducer, initialState);
+dispatch({ type: 'increment' });
+            </code></pre>
+            <div class="key-points">
+              <ul>
+                <li><b>useReducer(reducer, initialState):</b> Quản lý state phức tạp.</li>
+                <li><b>dispatch:</b> Gửi action để cập nhật state.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="useCallback" role="tabpanel">
+        <!-- useCallback -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-memory me-2"></i>useCallback</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <p>Tối ưu hóa hàm callback giữa các lần render.</p>
+            </div>
+            <pre class="code-block language-jsx"><code>
+import { useCallback } from 'react';
+
+const handleClick = useCallback(() => {
+  console.log('Clicked');
+}, []);
+            </code></pre>
+            <div class="key-points">
+              <ul>
+                <li><b>useCallback(callback, [deps]):</b> Memoized callback.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="useMemo" role="tabpanel">
+        <!-- useMemo -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-calculator me-2"></i>useMemo</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <p>Tối ưu hóa giá trị tính toán nặng.</p>
+            </div>
+            <pre class="code-block language-jsx"><code>
+import { useMemo } from 'react';
+
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+            </code></pre>
+            <div class="key-points">
+              <ul>
+                <li><b>useMemo(factory, [deps]):</b> Memoized computed value.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="useRef" role="tabpanel">
+        <!-- useRef -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-link me-2"></i>useRef</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <p>Tham chiếu DOM hoặc lưu giá trị không gây re-render.</p>
+            </div>
+            <pre class="code-block language-jsx"><code>
+import { useRef } from 'react';
+
+const inputRef = useRef(null);
+inputRef.current.focus();
+            </code></pre>
+            <div class="key-points">
+              <ul>
+                <li><b>useRef(initialValue):</b> Trả về object với thuộc tính current.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="useLayoutEffect" role="tabpanel">
+        <!-- useLayoutEffect -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-paint-roller me-2"></i>useLayoutEffect</h2>
+          </div>
+          <div class="card-body">
+            <div class="hook-info">
+              <p>Chạy side effects trước khi DOM được vẽ.</p>
+            </div>
+            <pre class="code-block language-jsx"><code>
+import { useLayoutEffect } from 'react';
+
+useLayoutEffect(() => {
+  // DOM manipulations
+}, [dependencies]);
+            </code></pre>
+            <div class="key-points">
+              <ul>
+                <li><b>useLayoutEffect(callback, [deps]):</b> Chạy trước khi browser vẽ.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Prism JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+</body>
+</html>
