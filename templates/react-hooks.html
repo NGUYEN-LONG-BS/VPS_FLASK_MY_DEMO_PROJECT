@@ -361,13 +361,11 @@ function App() {
   // Function to handle checkbox selection (or deselection)
   const handleCheck = (id: number) => {
     setChecked((prev) => {
-      const isChecked = checked.includes(id); // Check if the current course ID is already in the checked array
+      const isChecked = checked.includes(id);           // Check if the current course ID is already in the checked array
       if (isChecked) {
-        // If it's checked, remove it from the checked array
-        return checked.filter((item) => item !== id);
+        return checked.filter((item) => item !== id);   // If it's checked, remove it from the checked array
       } else {
-        // If it's not checked, add it to the checked array
-        return [...prev, id];
+        return [...prev, id];                           // If it's not checked, add it to the checked array
       }
     });
   };
