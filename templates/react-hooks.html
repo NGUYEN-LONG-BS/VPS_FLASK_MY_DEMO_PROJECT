@@ -361,12 +361,15 @@ function App() {
   // Function to handle checkbox selection (or deselection)
   const handleCheck = (id: number) => {
     setChecked((prev) => {
-      const isChecked = checked.includes(id);           // Check if the current course ID is already in the checked array
+      // Check if the current course ID is already in the checked array
+      const isChecked = checked.includes(id);           
+      // If it's checked, remove it from the checked array
       if (isChecked) {
-        return checked.filter((item) => item !== id);   // If it's checked, remove it from the checked array
-      } else {
-        return [...prev, id];                           // If it's not checked, add it to the checked array
+        return checked.filter((item) => item !== id);   
+      } else {  // If it's not checked, add it to the checked array
+        return [...prev, id];                           
       }
+
     });
   };
 
@@ -378,6 +381,7 @@ function App() {
 
   return (
     &lt;div style={{ padding: 32 }}&gt;                   {/* Container with padding for styling */}
+      {/* loop through the courses array and render each course */}
       {courses.map((course) => (
         &lt;div key={course.id}&gt;                       {/* Render each course dynamically */}
           &lt;input
