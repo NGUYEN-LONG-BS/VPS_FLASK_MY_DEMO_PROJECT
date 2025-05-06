@@ -408,41 +408,58 @@ export default App; // Export the App component so it can be used in other parts
 
 import { useState } from &quot;react&quot;; // Import the useState hook from React to manage state
 
+// Define an interface for Job objects, ensuring each job has an id (number) and a name (string)
 interface Job {
   id: number;
   name: string;
 }
 
 function App() {
-  const [job, setJob] = useState&lt;string&gt;(&#39;&#39;); // State to hold the current job input
+  // State to hold the current job input from the user
+  const [job, setJob] = useState&lt;string&gt;(&#39;&#39;); 
+  
+  {/* State to hold the list of jobs, initializing with data from localStorage */}
   const [jobs, setJobs] = useState&lt;Job[]&gt;(() =&gt; {
+    // Retrieve the jobs from localStorage and parse them into an array of Job objects
     const storageJobs = JSON.parse(localStorage.getItem(&#39;jobs&#39;) || &#39;[]&#39;) as Job[];
-    console.log(storageJobs);
-    return storageJobs;
+    console.log(storageJobs); // Log the jobs to the console for debugging
+    return storageJobs; // Return the parsed jobs
   });
 
+  {/* Function to handle when the user submits a new job */}
   const handleSubmit = () =&gt; {
+    // Update the jobs state by adding a new job
     setJobs(prev =&gt; {
+      // Create a new array by appending the new job to the previous list of jobs
       const newJobs = [...prev, { id: Date.now(), name: job }]; // Adding a unique ID for each job
 
-      // Save to local storage
+      // Convert the new list of jobs to a JSON string
       const jsonJobs = JSON.stringify(newJobs);
+      
+      // Save the updated list of jobs to localStorage
       localStorage.setItem(&#39;jobs&#39;, jsonJobs);
 
-      return newJobs;
+      return newJobs; // Return the new list of jobs
     });
 
+    // Clear the current job input field
     setJob(&#39;&#39;);
   };
 
   return (
     &lt;div style={{ padding: 32 }}&gt;
+      
+      {/* Input field for the user to enter a new job */}
       &lt;input
-        value={job}
-        onChange={e =&gt; setJob(e.target.value)}
+        value={job} // Bind the input value to the 'job' state
+        onChange={e =&gt; setJob(e.target.value)} // Update the 'job' state when the user types in the input field
       /&gt;
+      
+      {/* Button to trigger the handleSubmit function */}
       &lt;button onClick={handleSubmit}&gt;Add&lt;/button&gt;
+      
       &lt;ul&gt;
+        {/* Map over the jobs array and display each job as a list item */}
         {jobs.map((job, index) =&gt; (
           &lt;li key={job.id}&gt;{job.name}&lt;/li&gt; // Using job.id as the key for better performance
         ))}
@@ -451,7 +468,7 @@ function App() {
   );
 }
 
-export default App; // Export the App component so it can be used in other parts of the app
+export default App; {/* Export the App component so it can be used in other parts of the app */}
                   </code>
                 </pre>
               </ul>
