@@ -402,6 +402,58 @@ export default App; // Export the App component so it can be used in other parts
                 </pre>
               
                 <li>3. Todo list.</li>
+                <pre class="code-block language-jsx">
+                  <code>
+&quot;use client&quot;; // This directive is specific to Next.js, indicating that this component is for client-side rendering
+
+import { useState } from &quot;react&quot;; // Import the useState hook from React to manage state
+
+interface Job {
+  id: number;
+  name: string;
+}
+
+function App() {
+  const [job, setJob] = useState&lt;string&gt;(&#39;&#39;); // State to hold the current job input
+  const [jobs, setJobs] = useState&lt;Job[]&gt;(() =&gt; {
+    const storageJobs = JSON.parse(localStorage.getItem(&#39;jobs&#39;) || &#39;[]&#39;) as Job[];
+    console.log(storageJobs);
+    return storageJobs;
+  });
+
+  const handleSubmit = () =&gt; {
+    setJobs(prev =&gt; {
+      const newJobs = [...prev, { id: Date.now(), name: job }]; // Adding a unique ID for each job
+
+      // Save to local storage
+      const jsonJobs = JSON.stringify(newJobs);
+      localStorage.setItem(&#39;jobs&#39;, jsonJobs);
+
+      return newJobs;
+    });
+
+    setJob(&#39;&#39;);
+  };
+
+  return (
+    &lt;div style={{ padding: 32 }}&gt;
+      &lt;input
+        value={job}
+        onChange={e =&gt; setJob(e.target.value)}
+      /&gt;
+      &lt;button onClick={handleSubmit}&gt;Add&lt;/button&gt;
+      &lt;ul&gt;
+        {jobs.map((job, index) =&gt; (
+          &lt;li key={job.id}&gt;{job.name}&lt;/li&gt; // Using job.id as the key for better performance
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App; // Export the App component so it can be used in other parts of the app
+                  </code>
+                </pre>
               </ul>
             </div>
           </div>
