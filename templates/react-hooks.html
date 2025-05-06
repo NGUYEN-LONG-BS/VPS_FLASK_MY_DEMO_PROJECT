@@ -292,9 +292,114 @@ const increment = () => setCount(count + 1);
               </ul>
               <ul>
                 <p><b>Ứng dụng:</b></p>
-                <li>Random number.</li>
-                <li>Two-way binding.</li>
-                <li>Todo list.</li>
+                <li>1. Random number - với typescript trong Next.js 15</li>
+                <pre class="code-block language-jsx"><code>
+"use client" // This directive is specific to Next.js, indicating that this component is for the client-side rendering
+
+import { useState } from "react";
+
+// Declaring an array of possible gifts
+const gifts: string[] = [
+    'CPU i9',
+    'RAM 32GB RGB',
+    'RGB Keyboard',
+];
+
+// The main functional component
+function App() {
+    const [gift, setGift] = useState&lt;string | undefined&gt;(undefined); // Initial state is undefined, and the type of state can be either a string or undefined
+
+    const randomGift = () => {
+        const index = Math.floor(Math.random() * gifts.length); // Generate a random index based on the length of the gifts array
+        setGift(gifts[index]);  // Set the state to the randomly selected gift
+    };
+
+    return (
+      &lt;div&gt; style={{ padding: 32 }}&gt;
+        &lt;h1&gt;{gift || 'Chưa có phần thưởng'}&lt;/h1&gt;    {/* If there is a gift selected, display it. Otherwise, display 'Chưa có phần thưởng' */}
+        &lt;button&gt; onClick={randomGift}&gt;Lấy thưởng&lt;/button&gt;
+      &lt;/div&gt;
+    );
+}
+
+export default App; // Export the App component to be used in other parts of the app
+                  </code></pre>
+                <li>2 .Two-way binding - với check box</li>
+                <pre class="code-block language-jsx">
+                  <code>
+"use client"; // This directive is specific to Next.js, indicating that this component is for client-side rendering
+
+import { useState } from "react"; // Import the useState hook from React to manage state
+
+// Define the type for course to provide better type safety
+type Course = {
+  id: number;  // Unique identifier for each course
+  name: string;  // Name of the course
+};
+
+// Simulating the response from an API with a list of courses
+const courses: Course[] = [
+  {
+    id: 1,
+    name: 'HTML, CSS' // First course in the list
+  },
+  {
+    id: 2,
+    name: 'Javascript' // Second course in the list
+  },
+  {
+    id: 3,
+    name: 'ReactJS' // Third course in the list
+  }
+];
+
+// Main component of the application
+function App() {
+  // useState hook to manage the state of checked courses. It holds an array of course IDs that are selected.
+  const [checked, setChecked] = useState&lt;number[]&gt;([]); 
+
+  // Function to handle checkbox selection (or deselection)
+  const handleCheck = (id: number) => {
+    setChecked((prev) => {
+      const isChecked = checked.includes(id); // Check if the current course ID is already in the checked array
+      if (isChecked) {
+        // If it's checked, remove it from the checked array
+        return checked.filter((item) => item !== id);
+      } else {
+        // If it's not checked, add it to the checked array
+        return [...prev, id];
+      }
+    });
+  };
+
+  // Function to handle the submission of selected courses
+  const handleSubmit = () => {
+    // Output the selected course IDs (checked) to the console
+    console.log({ ids: checked });
+  };
+
+  return (
+    &lt;div style={{ padding: 32 }}&gt;                   {/* Container with padding for styling */}
+      {courses.map((course) => (
+        &lt;div key={course.id}&gt;                       {/* Render each course dynamically */}
+          &lt;input
+            type="checkbox"                               {/* Checkbox element */}
+            checked={checked.includes(course.id)}         {/* Check if the course ID is in the checked array */}
+            onChange={() => handleCheck(course.id)}       {/* Call the handleCheck function when the checkbox is clicked */}
+          /&gt;
+          {course.name}                                   {/* Display the name of the course */}
+        &lt;/div&gt;
+      ))}
+      &lt;button onClick={handleSubmit}&gt;Register&lt;/button&gt;    {/* Button to submit the selected courses */}
+    &lt;/div&gt;
+  );
+}
+
+export default App; // Export the App component so it can be used in other parts of the app
+                  </code>
+                </pre>
+              
+                <li>3. Todo list.</li>
               </ul>
             </div>
           </div>
