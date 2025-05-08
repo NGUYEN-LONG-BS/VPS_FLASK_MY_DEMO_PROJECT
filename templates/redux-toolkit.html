@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn Redux Toolkit</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Prism.js CSS for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 70px;
+        }
+        .navbar {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+        .card {
+            transition: transform 0.2s;
+            border: none;
+            border-radius: 10px;
+        }
+        .card:hover {
+            transform: scale(1.02);
+        }
+        pre {
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        code {
+            font-size: 0.9rem;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Redux Toolkit</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#configureStore">configureStore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createSlice">createSlice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createAsyncThunk">createAsyncThunk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createReducer">createReducer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createAction">createAction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createSelector">createSelector</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#middleware">Middleware</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#rtkQuery">RTK Query</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#NextJs15">Next.js 15</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Hướng dẫn chi tiết các thành phần trong Redux Toolkit</h1>
+        <p class="lead text-center mb-4">
+            Redux Toolkit là thư viện chính thức giúp đơn giản hóa Redux, giảm boilerplate code và tích hợp các best practices. Dưới đây là mô tả chi tiết về từng thành phần.
+        </p>
+
+        <!-- configureStore -->
+        <div id="configureStore" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">1. configureStore</h2>
+                <p>
+                    <strong>configureStore</strong> là hàm chính để tạo Redux store. Nó đơn giản hóa việc thiết lập store bằng cách tích hợp sẵn các middleware (như <code>redux-thunk</code>), hỗ trợ Redux DevTools, và cho phép cấu hình reducer dễ dàng. 
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Tự động thêm middleware mặc định để xử lý logic bất đồng bộ.</li>
+                        <li>Hỗ trợ Redux DevTools để debug dễ dàng.</li>
+                        <li>Cho phép kết hợp nhiều reducer thành một root reducer.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để khởi tạo store trong ứng dụng React, thường chỉ cần gọi một lần trong file <code>store.js</code>.
+                </p>
+                <pre><code class="language-javascript">
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from './counterSlice';
+
+const store = configureStore({
+    reducer: {
+        counter: counterReducer,
+    },
+});
+
+export default store;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- createSlice -->
+        <div id="createSlice" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">2. createSlice</h2>
+                <p>
+                    <strong>createSlice</strong> là công cụ mạnh mẽ để tạo reducer và action creators đồng thời. Nó giảm thiểu boilerplate code bằng cách tự động sinh ra action types và action creators dựa trên các reducer được định nghĩa.
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Hỗ trợ <strong>Immer</strong>, cho phép viết logic reducer theo kiểu "mutable" nhưng vẫn đảm bảo bất biến.</li>
+                        <li>Tự động tạo action creators và action types.</li>
+                        <li>Gộp reducer và action vào một "slice" duy nhất, dễ quản lý.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để quản lý state của một tính năng cụ thể, như bộ đếm, danh sách todo, hoặc dữ liệu người dùng.
+                </p>
+                <pre><code class="language-javascript">
+import { createSlice } from '@reduxjs/toolkit';
+
+const counterSlice = createSlice({
+    name: 'counter',
+    initialState: { value: 0 },
+    reducers: {
+        increment(state) {
+            state.value += 1;
+        },
+        decrement(state) {
+            state.value -= 1;
+        },
+        incrementByAmount(state, action) {
+            state.value += action.payload;
+        },
+    },
+});
+
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export default counterSlice.reducer;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- createAsyncThunk -->
+        <div id="createAsyncThunk" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">3. createAsyncThunk</h2>
+                <p>
+                    <strong>createAsyncThunk</strong> là hàm dùng để xử lý các tác vụ bất đồng bộ, như gọi API. Nó tự động sinh ra các action tương ứng với ba trạng thái: <code>pending</code>, <code>fulfilled</code>, và <code>rejected</code>.
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Tự động quản lý trạng thái của request (đang tải, thành công, lỗi).</li>
+                        <li>Cho phép truyền tham số vào hàm bất đồng bộ.</li>
+                        <li>Tích hợp dễ dàng với <code>createSlice</code> để xử lý kết quả.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để fetch dữ liệu từ API, như lấy danh sách bài viết hoặc thông tin người dùng.
+                </p>
+                <pre><code class="language-javascript">
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+export const fetchUser = createAsyncThunk('user/fetch', async (userId, { rejectWithValue }) => {
+    try {
+        const response = await fetch(`/api/user/${userId}`);
+        if (!response.ok) throw new Error('Failed to fetch');
+        return await response.json();
+    } catch (error) {
+        return rejectWithValue(error.message);
+    }
+});
+
+const userSlice = createSlice({
+    name: 'user',
+    initialState: { user: null, status: 'idle', error: null },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUser.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUser.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.user = action.payload;
+            })
+            .addCase(fetchUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            });
+    },
+});
+
+export default userSlice.reducer;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- createReducer -->
+        <div id="createReducer" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">4. createReducer</h2>
+                <p>
+                    <strong>createReducer</strong> là hàm tạo reducer theo cách thủ công hơn so với <code>createSlice</code>. Nó hỗ trợ hai cú pháp: "map object" (ánh xạ action type với hàm xử lý) và "builder callback" (dùng để xử lý logic phức tạp hơn).
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Hỗ trợ Immer để viết reducer dễ dàng.</li>
+                        <li>Linh hoạt hơn <code>createSlice</code> khi cần xử lý logic reducer riêng lẻ.</li>
+                        <li>Thích hợp cho các trường hợp không cần tạo action creators tự động.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng khi cần tạo reducer độc lập hoặc tích hợp với các action từ nguồn khác.
+                </p>
+                <pre><code class="language-javascript">
+import { createReducer } from '@reduxjs/toolkit';
+
+const initialState = { count: 0 };
+
+const counterReducer = createReducer(initialState, {
+    'counter/increment': (state) => {
+        state.count += 1;
+    },
+    'counter/decrement': (state) => {
+        state.count -= 1;
+    },
+});
+
+export default counterReducer;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- createAction -->
+        <div id="createAction" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">5. createAction</h2>
+                <p>
+                    <strong>createAction</strong> là hàm tạo action creators độc lập mà không cần gắn với reducer. Nó hữu ích khi bạn chỉ cần định nghĩa một hành động đơn giản hoặc khi làm việc với các hệ thống Redux khác.
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Tạo action creators với type được định nghĩa sẵn.</li>
+                        <li>Hỗ trợ truyền payload vào action.</li>
+                        <li>Thích hợp khi không cần logic reducer phức tạp.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để gửi các hành động như reset state hoặc kích hoạt sự kiện cụ thể.
+                </p>
+                <pre><code class="language-javascript">
+import { createAction } from '@reduxjs/toolkit';
+
+export const resetApp = createAction('app/reset');
+export const setTheme = createAction('app/setTheme');
+
+// Sử dụng trong component
+dispatch(setTheme('dark'));
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- createSelector -->
+        <div id="createSelector" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">6. createSelector</h2>
+                <p>
+                    <strong>createSelector</strong> là hàm từ thư viện <code>Reselect</code>, được tích hợp trong Redux Toolkit. Nó tạo các selector có khả năng memoization, giúp tối ưu hiệu suất bằng cách chỉ tính toán lại khi input thay đổi.
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Ngăn tính toán lại dữ liệu không cần thiết.</li>
+                        <li>Cho phép kết hợp nhiều selector để tạo selector phức tạp.</li>
+                        <li>Tích hợp tốt với React-Redux để tối ưu render.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để lấy dữ liệu từ state (như lọc danh sách hoặc tính tổng) mà không gây re-render không cần thiết.
+                </p>
+                <pre><code class="language-javascript">
+import { createSelector } from '@reduxjs/toolkit';
+
+const selectTodos = state => state.todos;
+const selectFilter = state => state.filter;
+
+const selectFilteredTodos = createSelector(
+    [selectTodos, selectFilter],
+    (todos, filter) => todos.filter(todo => todo.status === filter)
+);
+
+export default selectFilteredTodos;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- Middleware -->
+        <div id="middleware" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">7. Middleware</h2>
+                <p>
+                    Redux Toolkit tích hợp sẵn middleware như <code>redux-thunk</code> để xử lý logic bất đồng bộ. Ngoài ra, bạn có thể thêm các middleware tùy chỉnh thông qua <code>configureStore</code>.
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li><code>redux-thunk</code> cho phép viết các action creators trả về hàm thay vì object.</li>
+                        <li>Hỗ trợ middleware tùy chỉnh để xử lý logging, analytics, hoặc các tác vụ phức tạp.</li>
+                        <li>Tích hợp dễ dàng với các thư viện như <code>redux-saga</code> hoặc <code>redux-observable</code>.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để ghi log hành động, xử lý API call, hoặc thêm logic trung gian giữa action và reducer.
+                </p>
+                <pre><code class="language-javascript">
+import { configureStore } from '@reduxjs/toolkit';
+
+const logger = store => next => action => {
+    console.log('Dispatching:', action);
+    return next(action);
+};
+
+const store = configureStore({
+    reducer: {},
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+});
+
+export default store;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- RTK Query -->
+        <div id="rtkQuery" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">8. RTK Query</h2>
+                <p>
+                    <strong>RTK Query</strong> là công cụ mạnh mẽ trong Redux Toolkit để quản lý dữ liệu từ API. Nó cung cấp các tính năng như tự động caching, refetching, và quản lý trạng thái request, giúp giảm thiểu code thủ công.
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Tự động tạo hooks (như <code>useQuery</code>, <code>useMutation</code>) để sử dụng trong React.</li>
+                        <li>Hỗ trợ caching và invalidation để tối ưu hiệu suất.</li>
+                        <li>Quản lý trạng thái loading, error, và data một cách dễ dàng.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để fetch và đồng bộ dữ liệu từ API, như danh sách bài viết, thông tin người dùng, hoặc cập nhật dữ liệu theo thời gian thực.
+                </p>
+                <pre><code class="language-javascript">
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const postApi = createApi({
+    reducerPath: 'postApi',
+    baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+    endpoints: (builder) => ({
+        getPosts: builder.query({
+            query: () => 'posts',
+        }),
+        addPost: builder.mutation({
+            query: (newPost) => ({
+                url: 'posts',
+                method: 'POST',
+                body: newPost,
+            }),
+        }),
+    }),
+});
+
+export const { useGetPostsQuery, useAddPostMutation } = postApi;
+                </code></pre>
+            </div>
+        </div>
+
+        <!-- Next.js 15 -->
+        <div id="NextJs15" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">9. Cấu trúc cây thư mục trong dự án Next.js 15 (App Router và TypeScript)</h2>
+                <p>
+                    Khi tích hợp Redux Toolkit vào dự án Next.js 15 sử dụng App Router và TypeScript, cấu trúc thư mục cần được tổ chức theo cách tối ưu để dễ bảo trì và mở rộng. Dưới đây là cấu trúc đề xuất:
+                </p>    
+                <pre><code class="language-javascript">
+project-root/
+├── app/
+│   ├── layout.tsx             # Root layout với Redux Provider
+│   ├── page.tsx              # Trang chính
+│   ├── globals.css           # CSS toàn cục
+│   ├── (features)/           # Nhóm tính năng
+│   │   ├── counter/          # Tính năng bộ đếm
+│   │   │   ├── page.tsx      # Trang hiển thị bộ đếm
+│   │   │   ├── Counter.tsx   # Component bộ đếm
+│   │   ├── todos/            # Tính năng todo
+│   │   │   ├── page.tsx      # Trang hiển thị todo
+│   │   │   ├── TodoList.tsx  # Component danh sách todo
+│   │   │   ├── AddTodo.tsx   # Component thêm todo
+├── lib/
+│   ├── redux/                # Quản lý Redux Toolkit
+│   │   ├── store.ts          # Cấu hình store
+│   │   ├── hooks.ts          # Custom hooks (useAppDispatch, useAppSelector)
+│   │   ├── slices/           # Các slice
+│   │   │   ├── counterSlice.ts  # Slice bộ đếm
+│   │   │   ├── todoSlice.ts    # Slice todo
+│   │   ├── services/         # RTK Query APIs
+│   │   │   ├── api.ts        # Cấu hình API
+│   │   ├── types/            # TypeScript types
+│   │   │   ├── index.ts      # RootState, AppDispatch
+├── public/                   # Tài nguyên tĩnh
+├── components/               # Component dùng chung
+│   ├── Header.tsx            # Header
+│   ├── Footer.tsx            # Footer
+├── styles/                   # CSS modules
+│   ├── counter.module.css    # CSS cho counter
+├── types/                    # TypeScript types chung
+│   ├── todo.ts               # Type cho todo
+├── utils/                    # Hàm tiện ích
+│   ├── api.ts                # API utils
+├── next.config.js            # Cấu hình Next.js
+├── tsconfig.json             # Cấu hình TypeScript
+├── package.json              # Dependencies
+                </code></pre>
+                <p>
+                    <strong>Giải thích:</strong>
+                    <ul>
+                        <li><strong>app/layout.tsx</strong>: Đặt Redux Provider để store có thể dùng toàn cục.</li>
+                        <li><strong>lib/redux/</strong>: Chứa toàn bộ logic Redux (store, slices, RTK Query).</li>
+                        <li><strong>app/(features)/</strong>: Tổ chức các tính năng theo App Router, mỗi tính năng có page và component riêng.</li>
+                        <li><strong>types/</strong>: Quản lý các type TypeScript để đảm bảo an toàn kiểu.</li>
+                    </ul>
+                    <strong>Ví dụ tích hợp Redux Provider:</strong>
+                </p>
+                <pre><code class="language-javascript">
+'use client';
+import { Provider } from 'react-redux';
+import { store } from '@/lib/redux/store';
+import './globals.css';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+    &lt;html lang="en"&gt;
+        &lt;body&gt;
+        &lt;Provider store={store}&gt;{children}&lt;/Provider&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
+    );
+}
+                    </code></pre>
+            </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">Lợi ích của Redux Toolkit</h2>
+                <p>Redux Toolkit mang lại nhiều lợi ích so với Redux truyền thống:</p>
+                <ul>
+                    <li><strong>Giảm boilerplate code:</strong> Các API như <code>createSlice</code> và <code>createAsyncThunk</code> giúp viết code ngắn gọn hơn.</li>
+                    <li><strong>Tích hợp best practices:</strong> Sử dụng Immer, DevTools, và các cấu hình mặc định tối ưu.</li>
+                    <li><strong>Dễ bảo trì:</strong> Tổ chức code theo "slice" giúp quản lý state dễ dàng hơn.</li>
+                    <li><strong>Hiệu suất cao:</strong> Tích hợp <code>createSelector</code> và RTK Query để tối ưu hiệu suất.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <p>Nếu bạn cần giải thích chi tiết hơn hoặc ví dụ cụ thể, hãy liên hệ!</p>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="btn btn-primary back-to-top" id="backToTop">
+        <i class="bi bi-arrow-up"></i> Top
+    </a>
+
+    <!-- Bootstrap 5 JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <!-- Custom JS for Back to Top -->
+    <script>
+        window.onscroll = function () {
+            const backToTop = document.getElementById('backToTop');
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        };
+    </script>
+    <!-- Bootstrap Icons (for Back to Top icon) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>
