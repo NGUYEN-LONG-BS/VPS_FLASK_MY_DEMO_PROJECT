@@ -55,11 +55,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#configureStore">configureStore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#configureStore">Store</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createAction">Action</a></li>
                     <li class="nav-item"><a class="nav-link" href="#createSlice">createSlice</a></li>
                     <li class="nav-item"><a class="nav-link" href="#createAsyncThunk">createAsyncThunk</a></li>
                     <li class="nav-item"><a class="nav-link" href="#createReducer">createReducer</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#createAction">createAction</a></li>
                     <li class="nav-item"><a class="nav-link" href="#createSelector">createSelector</a></li>
                     <li class="nav-item"><a class="nav-link" href="#middleware">Middleware</a></li>
                     <li class="nav-item"><a class="nav-link" href="#rtkQuery">RTK Query</a></li>
@@ -79,7 +79,7 @@
         <!-- configureStore -->
         <div id="configureStore" class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h2 class="section-title card-title">1. configureStore</h2>
+                <h2 class="section-title card-title">1. Store - configureStore</h2>
                 <p>
                     <strong>configureStore</strong> là hàm chính để tạo Redux store. Nó đơn giản hóa việc thiết lập store bằng cách tích hợp sẵn các middleware (như <code>redux-thunk</code>), hỗ trợ Redux DevTools, và cho phép cấu hình reducer dễ dàng. 
                 </p>
@@ -111,13 +111,59 @@ export default store;
                     alt="Redux Data Flow Diagram" 
                     style="width: 50%; display: block; margin: 0 auto;"/>
                 </div>
+                <div>
+                    <p>Khi có store, ứng dụng không cần truyền dữ liệu từ cha vào con, mọi component đề lấy data từ store ra:</p>
+                    <img 
+                    src="./redux-store.webp" 
+                    alt="Redux Data Flow with store" 
+                    style="width: 50%; display: block; margin: 0 auto;"/>
+                </div>
+            </div>
+        </div>
+        
+        <!-- createAction -->
+        <div id="createAction" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">2. Action - createAction</h2>
+                <p>
+                    <strong>Khái niệm:</strong> Redux action là một đối tượng js đơn giản, gồm có type và payload. Type là một string, bắt buộc phải có. Payload là một object, không có cũng được.
+                </p>
+                <pre><code class="language-javascript">
+const Actions = {
+     type: '',
+     payload: ''
+}
+                </code></pre>
+                
+                <p>
+                    <strong>createAction</strong> là hàm tạo action creators độc lập mà không cần gắn với reducer. Nó hữu ích khi bạn chỉ cần định nghĩa một hành động đơn giản hoặc khi làm việc với các hệ thống Redux khác.
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Tạo action creators với type được định nghĩa sẵn.</li>
+                        <li>Hỗ trợ truyền payload vào action.</li>
+                        <li>Thích hợp khi không cần logic reducer phức tạp.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng để gửi các hành động như reset state hoặc kích hoạt sự kiện cụ thể.
+                </p>
+                <pre><code class="language-javascript">
+import { createAction } from '@reduxjs/toolkit';
+
+export const resetApp = createAction('app/reset');
+export const setTheme = createAction('app/setTheme');
+
+// Sử dụng trong component
+dispatch(setTheme('dark'));
+                </code></pre>
+                
             </div>
         </div>
 
         <!-- createSlice -->
         <div id="createSlice" class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h2 class="section-title card-title">2. createSlice</h2>
+                <h2 class="section-title card-title">3. createSlice</h2>
                 <p>
                     <strong>createSlice</strong> là công cụ mạnh mẽ để tạo reducer và action creators đồng thời. Nó giảm thiểu boilerplate code bằng cách tự động sinh ra action types và action creators dựa trên các reducer được định nghĩa.
                 </p>
@@ -158,7 +204,7 @@ export default counterSlice.reducer;
         <!-- createAsyncThunk -->
         <div id="createAsyncThunk" class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h2 class="section-title card-title">3. createAsyncThunk</h2>
+                <h2 class="section-title card-title">4. createAsyncThunk</h2>
                 <p>
                     <strong>createAsyncThunk</strong> là hàm dùng để xử lý các tác vụ bất đồng bộ, như gọi API. Nó tự động sinh ra các action tương ứng với ba trạng thái: <code>pending</code>, <code>fulfilled</code>, và <code>rejected</code>.
                 </p>
@@ -211,7 +257,7 @@ export default userSlice.reducer;
         <!-- createReducer -->
         <div id="createReducer" class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h2 class="section-title card-title">4. createReducer</h2>
+                <h2 class="section-title card-title">5. createReducer</h2>
                 <p>
                     <strong>createReducer</strong> là hàm tạo reducer theo cách thủ công hơn so với <code>createSlice</code>. Nó hỗ trợ hai cú pháp: "map object" (ánh xạ action type với hàm xử lý) và "builder callback" (dùng để xử lý logic phức tạp hơn).
                 </p>
@@ -239,34 +285,6 @@ const counterReducer = createReducer(initialState, {
 });
 
 export default counterReducer;
-                </code></pre>
-            </div>
-        </div>
-
-        <!-- createAction -->
-        <div id="createAction" class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <h2 class="section-title card-title">5. createAction</h2>
-                <p>
-                    <strong>createAction</strong> là hàm tạo action creators độc lập mà không cần gắn với reducer. Nó hữu ích khi bạn chỉ cần định nghĩa một hành động đơn giản hoặc khi làm việc với các hệ thống Redux khác.
-                </p>
-                <p>
-                    <strong>Các tính năng chính:</strong>
-                    <ul>
-                        <li>Tạo action creators với type được định nghĩa sẵn.</li>
-                        <li>Hỗ trợ truyền payload vào action.</li>
-                        <li>Thích hợp khi không cần logic reducer phức tạp.</li>
-                    </ul>
-                    <strong>Ứng dụng thực tế:</strong> Dùng để gửi các hành động như reset state hoặc kích hoạt sự kiện cụ thể.
-                </p>
-                <pre><code class="language-javascript">
-import { createAction } from '@reduxjs/toolkit';
-
-export const resetApp = createAction('app/reset');
-export const setTheme = createAction('app/setTheme');
-
-// Sử dụng trong component
-dispatch(setTheme('dark'));
                 </code></pre>
             </div>
         </div>
