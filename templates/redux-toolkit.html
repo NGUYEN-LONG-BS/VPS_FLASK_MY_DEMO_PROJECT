@@ -56,10 +56,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#configureStore">Store</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#State">State</a></li>
                     <li class="nav-item"><a class="nav-link" href="#createAction">Action</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#createSlice">createSlice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createReducer">Reducer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#createSlice">Slice</a></li>
                     <li class="nav-item"><a class="nav-link" href="#createAsyncThunk">createAsyncThunk</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#createReducer">createReducer</a></li>
                     <li class="nav-item"><a class="nav-link" href="#createSelector">createSelector</a></li>
                     <li class="nav-item"><a class="nav-link" href="#middleware">Middleware</a></li>
                     <li class="nav-item"><a class="nav-link" href="#rtkQuery">RTK Query</a></li>
@@ -120,11 +121,40 @@ export default store;
                 </div>
             </div>
         </div>
+
+        <!-- State -->
+        <div id="State" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">2. State</h2>
+                <p>
+                    <strong>State</strong> là dữ liệu của ứng dụng tại một thời điểm cụ thể. Có thể hiểu nó là tập hợp các giá trị của một coponent tại một thời điểm.
+                    <li>Được lưu trữ trong Redux store</li>
+                    <li>State là bất biến (immutable), nghĩa là bạn không thay đổi trực tiếp state mà tạo ra một bản sao mới mỗi khi có thay đổi.</li>
+                    
+                </p>
+                <pre><code class="language-javascript">
+interface DocumentNumberState {
+  documentNumber: string;
+}
+
+const currentYear = new Date().getFullYear().toString().slice(-2);
+const initialState: DocumentNumberState = {
+  documentNumber: `TB-PNK-${currentYear}0001`,
+};
+                </code></pre>
+                <p>
+                    <strong>Ví dụ:</strong>
+                    <li>State sẽ có kiểu dữ liệu là string (được định nghĩa trong interface DocumentNumberState)</li>
+                    <li>initialState: Giá trị khi component được khởi tạo là TB-PNK-250001 (25 là số năm, sẽ được nhảy tự động khi năm thay đổi)</li>
+                    <p>Để dễ hiểu thì chúng ta cứ xem state là các giá trị hiển thị trên giao diện. Redux lưu trữ state trong store để dễ quản lý và truy cập.</p>
+                </p>
+            </div>
+        </div>
         
         <!-- createAction -->
         <div id="createAction" class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h2 class="section-title card-title">2. Action - createAction</h2>
+                <h2 class="section-title card-title">3. Action</h2>
                 <p>
                     <strong>Khái niệm:</strong> Redux action là một đối tượng js đơn giản, gồm có type và payload. Type là một string, bắt buộc phải có. Payload là một object, không có cũng được.
                 </p>
@@ -159,12 +189,48 @@ dispatch(setTheme('dark'));
                 
             </div>
         </div>
+        
+        <!-- createReducer -->
+        <div id="createReducer" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="section-title card-title">4. Reducer</h2>
+                <p>
+                    <strong>createReducer</strong> là hàm tạo reducer theo cách thủ công hơn so với <code>createSlice</code>. Nó hỗ trợ hai cú pháp: "map object" (ánh xạ action type với hàm xử lý) và "builder callback" (dùng để xử lý logic phức tạp hơn).
+                </p>
+                <p>
+                    <strong>Các tính năng chính:</strong>
+                    <ul>
+                        <li>Hỗ trợ Immer để viết reducer dễ dàng.</li>
+                        <li>Linh hoạt hơn <code>createSlice</code> khi cần xử lý logic reducer riêng lẻ.</li>
+                        <li>Thích hợp cho các trường hợp không cần tạo action creators tự động.</li>
+                    </ul>
+                    <strong>Ứng dụng thực tế:</strong> Dùng khi cần tạo reducer độc lập hoặc tích hợp với các action từ nguồn khác.
+                </p>
+                <pre><code class="language-javascript">
+import { createReducer } from '@reduxjs/toolkit';
+
+const initialState = { count: 0 };
+
+const counterReducer = createReducer(initialState, {
+    'counter/increment': (state) => {
+        state.count += 1;
+    },
+    'counter/decrement': (state) => {
+        state.count -= 1;
+    },
+});
+
+export default counterReducer;
+                </code></pre>
+            </div>
+        </div>
 
         <!-- createSlice -->
         <div id="createSlice" class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h2 class="section-title card-title">3. createSlice</h2>
+                <h2 class="section-title card-title">5. Slice - createSlice</h2>
                 <p>
+                    <strong>Slice</strong> là kết hợp giữa state, actions và reducers.
                     <strong>createSlice</strong> là công cụ mạnh mẽ để tạo reducer và action creators đồng thời. Nó giảm thiểu boilerplate code bằng cách tự động sinh ra action types và action creators dựa trên các reducer được định nghĩa.
                 </p>
                 <p>
@@ -204,7 +270,7 @@ export default counterSlice.reducer;
         <!-- createAsyncThunk -->
         <div id="createAsyncThunk" class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h2 class="section-title card-title">4. createAsyncThunk</h2>
+                <h2 class="section-title card-title">6. createAsyncThunk</h2>
                 <p>
                     <strong>createAsyncThunk</strong> là hàm dùng để xử lý các tác vụ bất đồng bộ, như gọi API. Nó tự động sinh ra các action tương ứng với ba trạng thái: <code>pending</code>, <code>fulfilled</code>, và <code>rejected</code>.
                 </p>
@@ -250,41 +316,6 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-                </code></pre>
-            </div>
-        </div>
-
-        <!-- createReducer -->
-        <div id="createReducer" class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <h2 class="section-title card-title">5. createReducer</h2>
-                <p>
-                    <strong>createReducer</strong> là hàm tạo reducer theo cách thủ công hơn so với <code>createSlice</code>. Nó hỗ trợ hai cú pháp: "map object" (ánh xạ action type với hàm xử lý) và "builder callback" (dùng để xử lý logic phức tạp hơn).
-                </p>
-                <p>
-                    <strong>Các tính năng chính:</strong>
-                    <ul>
-                        <li>Hỗ trợ Immer để viết reducer dễ dàng.</li>
-                        <li>Linh hoạt hơn <code>createSlice</code> khi cần xử lý logic reducer riêng lẻ.</li>
-                        <li>Thích hợp cho các trường hợp không cần tạo action creators tự động.</li>
-                    </ul>
-                    <strong>Ứng dụng thực tế:</strong> Dùng khi cần tạo reducer độc lập hoặc tích hợp với các action từ nguồn khác.
-                </p>
-                <pre><code class="language-javascript">
-import { createReducer } from '@reduxjs/toolkit';
-
-const initialState = { count: 0 };
-
-const counterReducer = createReducer(initialState, {
-    'counter/increment': (state) => {
-        state.count += 1;
-    },
-    'counter/decrement': (state) => {
-        state.count -= 1;
-    },
-});
-
-export default counterReducer;
                 </code></pre>
             </div>
         </div>
