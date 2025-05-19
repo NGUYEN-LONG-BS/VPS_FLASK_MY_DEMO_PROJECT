@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6 Công cụ lãi suất và Hành lang lãi suất</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            padding-top: 70px; /* Avoid content overlap with fixed navbar */
+        }
+        .container {
+            max-width: 1000px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .accordion-button {
+            font-weight: 600;
+            background-color: #e7f1ff;
+            color: #1A3C5A;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: #1A3C5A;
+            color: white;
+        }
+        .accordion-body {
+            background-color: #ffffff;
+            border-left: 4px solid #1A3C5A;
+        }
+        .icon {
+            margin-right: 10px;
+            color: #1A3C5A;
+        }
+        .example {
+            font-style: italic;
+            color: #6c757d;
+        }
+        .navbar {
+            background-color: #1A3C5A;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #e7f1ff !important;
+        }
+        .tab-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        .nav-tabs .nav-link {
+            color: #1A3C5A;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #1A3C5A;
+            color: white;
+            border-color: #1A3C5A;
+        }
+        .table th {
+            background-color: #e7f1ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#"><i class="fas fa-university me-2"></i>Lãi suất</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Các loại lãi suất</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Các công cụ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ưu nhược điểm</a>
+                    </li>
+                </ul>
+                <!-- <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+                </form> -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <div class="header">
+            <h1 class="display-5 fw-bold">Cơ chế điều hành lãi suất của Việt Nam</h1>
+            <p class="lead text-muted">Tìm hiểu cách Ngân hàng Nhà nước điều tiết kinh tế và các phương pháp điều hành lãi suất</p>
+        </div>
+
+        <div>
+            <p>Lý thuyết điều hành lãi suất:</p>
+            <img 
+            src="./co-che-dieu-hanh-lai-suat-viet-nam.png" 
+            alt="Cơ chế điều hành lãi suất" 
+            style="width: 80%; display: block; margin: 0 auto;"/>
+            <div>
+                <p>Khi người cho vay nhiều, người đi vay ít (tiền rẻ), khiến cho lãi suất thấp, dẫn đến bùng nổ kinh tế, tiềm tàng lạm phát.</p>
+                <p>Khi người đi vay ít mà người cho vay lại ít (thiếu tiền), khiến cho lãi suất tăng cao, dẫn đến thiếu thanh khoản, rủi ro tạo ra hiện tượng bank run.</p>
+                <P>Vì vậy, để xã hội ổn định, cần phải có bên điều tiết lãi suất, chính là ngân hàng trung ương Việt Nam - SBV</P>
+                <p>Cần phân biệt 2 loại lãi suất:</p>
+                <ul>
+                    <li>Lãi suất chính sách (lãi suất điều hành): được quy định bởi SBV</li>
+                    <li>Lãi suất thị trường: Có 2 thị trường thị trường 1 và thị trường 2:</li>
+                    <ul>
+                        <li>Thị trường 2: Bank và bank (liên ngân hàng)</li>
+                        <li>Thị trường 1: Bank và dân</li>    
+                    </ul>
+                </ul>
+                <p>Chính sách lãi suất sẽ được SBV đưa ra, ảnh hưởng vào thị trường 2, rồi mới đến thị trường 1.</p>
+            </div>
+        </div>
+
+        <!-- Section 1: 6 Interest Rate Tools -->
+        <h2 class="mb-4"><i class="fas fa-coins me-2"></i> 6 Công cụ lãi suất của Việt Nam</h2>
+        <div class="accordion mb-5" id="interestRateAccordion">
+            <!-- Tool 1: Lãi suất tái cấp vốn -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="fas fa-hand-holding-usd icon"></i> 1. Lãi suất tái cấp vốn
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#interestRateAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Định nghĩa:</strong> Lãi suất Ngân hàng Nhà nước (NHNN) áp dụng khi cho các ngân hàng thương mại vay để bổ sung vốn ngắn hạn, thường có tài sản đảm bảo (trái phiếu chính phủ).</p>
+                        <p><strong>Mục đích:</strong></p>
+                        <ul>
+                            <li>Điều tiết lượng tiền trong lưu thông.</li>
+                            <li>Hỗ trợ thanh khoản ngân hàng.</li>
+                            <li>Định hướng lãi suất thị trường.</li>
+                        </ul>
+                        <p><strong>Tác động:</strong></p>
+                        <ul>
+                            <li><strong>Giảm:</strong> Ngân hàng vay rẻ hơn, giảm lãi suất cho vay, kích thích kinh tế.</li>
+                            <li><strong>Tăng:</strong> Chi phí vay cao, thắt chặt tín dụng, giảm cung tiền.</li>
+                        </ul>
+                        <p><strong>Vai trò:</strong> <span class="badge bg-success">Giới hạn trần</span> (ceiling rate) cho lãi suất liên ngân hàng.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Năm 2023, NHNN giảm từ 6% xuống 4,5% để hỗ trợ doanh nghiệp.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 2: Lãi suất tái chiết khấu -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <i class="fas fa-file-invoice-dollar icon"></i> 2. Lãi suất tái chiết khấu
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#interestRateAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Định nghĩa:</strong> Lãi suất NHNN áp dụng khi mua lại giấy tờ có giá (hối phiếu, kỳ phiếu) từ ngân hàng thương mại trước khi đến hạn.</p>
+                        <p><strong>Mục đích:</strong></p>
+                        <ul>
+                            <li>Cung cấp vốn ngắn hạn.</li>
+                            <li>Điều chỉnh cung tiền qua mua/bán giấy tờ có giá.</li>
+                        </ul>
+                        <p><strong>Tác động:</strong></p>
+                        <ul>
+                            <li><strong>Thấp:</strong> Khuyến khích bán giấy tờ, tăng cung tiền.</li>
+                            <li><strong>Cao:</strong> Giảm động lực bán, hạn chế cung tiền.</li>
+                        </ul>
+                        <p><strong>Vai trò:</strong> <span class="badge bg-warning">Giới hạn sàn (yếu)</span> (floor rate) trong một số trường hợp.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Năm 2023, lãi suất tái chiết khấu khoảng 3-4%.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 3: Lãi suất cho vay qua đêm -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <i class="fas fa-moon icon"></i> 3. Lãi suất cho vay qua đêm
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#interestRateAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Định nghĩa:</strong> Lãi suất áp dụng cho khoản vay qua đêm giữa NHNN và ngân hàng thương mại để giải quyết thiếu hụt vốn tạm thời.</p>
+                        <p><strong>Mục đích:</strong></p>
+                        <ul>
+                            <li>Đảm bảo thanh khoản hệ thống ngân hàng.</li>
+                            <li>Ổn định lãi suất liên ngân hàng.</li>
+                        </ul>
+                        <p><strong>Tác động:</strong></p>
+                        <ul>
+                            <li><strong>Thấp:</strong> Dễ vay, giảm áp lực lãi suất thị trường.</li>
+                            <li><strong>Cao:</strong> Tăng chi phí vay, khuyến khích quản lý thanh khoản.</li>
+                        </ul>
+                        <p><strong>Vai trò:</strong> <span class="badge bg-success">Giới hạn trần</span> (ceiling rate) cao nhất cho lãi suất liên ngân hàng.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Năm 2023-2024, lãi suất qua đêm khoảng 5-6%.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 4: Lãi suất thị trường mở (OMO) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <i class="fas fa-store icon"></i> 4. Lãi suất thị trường mở (OMO)
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#interestRateAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Định nghĩa:</strong> Lãi suất áp dụng trong giao dịch mua/bán giấy tờ có giá giữa NHNN và ngân hàng thương mại trên thị trường mở.</p>
+                        <p><strong>Mục đích:</strong></p>
+                        <ul>
+                            <li>Điều tiết cung tiền ngắn hạn linh hoạt.</li>
+                            <li>Ổn định lãi suất liên ngân hàng.</li>
+                        </ul>
+                        <p><strong>Tác động:</strong></p>
+                        <ul>
+                            <li><strong>Mua giấy tờ:</strong> Tăng cung tiền, kích thích kinh tế.</li>
+                            <li><strong>Bán giấy tờ:</strong> Hút tiền về, giảm cung tiền.</li>
+                        </ul>
+                        <p><strong>Vai trò:</strong> <span class="badge bg-info">Hỗ trợ điều tiết</span> trong hành lang lãi suất, không trực tiếp là trần/sàn.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Năm 2023, lãi suất OMO khoảng 4%.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 5: Lãi suất tín phiếu NHNN -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <i class="fas fa-ticket-alt icon"></i> 5. Lãi suất tín phiếu NHNN
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#interestRateAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Định nghĩa:</strong> Lãi suất áp dụng cho tín phiếu do NHNN phát hành để hút tiền từ ngân hàng thương mại, thường có kỳ hạn ngắn.</p>
+                        <p><strong>Mục đích:</strong></p>
+                        <ul>
+                            <li>Hút tiền dư thừa trong lưu thông.</li>
+                            <li>Kiểm soát lạm phát.</li>
+                        </ul>
+                        <p><strong>Tác động:</strong></p>
+                        <ul>
+                            <li><strong>Cao:</strong> Khuyến khích mua tín phiếu, giảm cung tiền.</li>
+                            <li><strong>Thấp:</strong> Giảm sức hấp dẫn tín phiếu, giữ tiền lưu thông.</li>
+                        </ul>
+                        <p><strong>Vai trò:</strong> <span class="badge bg-warning">Giới hạn sàn</span> (floor rate) cho lãi suất liên ngân hàng.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Năm 2023, lãi suất tín phiếu khoảng 3-4%.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 6: Lãi suất điều hành -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        <i class="fas fa-cogs icon"></i> 6. Lãi suất điều hành
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#interestRateAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Định nghĩa:</strong> Lãi suất tổng quát do NHNN công bố để định hướng các lãi suất thị trường (tái cấp vốn, OMO, v.v.).</p>
+                        <p><strong>Mục đích:</strong></p>
+                        <ul>
+                            <li>Định hướng lãi suất huy động, cho vay.</li>
+                            <li>Thúc đẩy tăng trưởng hoặc kiểm soát lạm phát.</li>
+                        </ul>
+                        <p><strong>Tác động:</strong></p>
+                        <ul>
+                            <li><strong>Giảm:</strong> Giảm chi phí vay, tăng đầu tư, nhưng có nguy cơ lạm phát.</li>
+                            <li><strong>Tăng:</strong> Giảm đầu tư, kiểm soát lạm phát, ổn định tỷ giá.</li>
+                        </ul>
+                        <p><strong>Vai trò:</strong> <span class="badge bg-info">Định hướng tổng quát</span>, không trực tiếp là trần/sàn.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Năm 2023-2024, NHNN giảm lãi suất điều hành để hỗ trợ kinh tế.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Summary Table for Ceiling/Floor -->
+        <h2 class="mb-4"><i class="fas fa-table me-2"></i> Tóm tắt vai trò trần/sàn</h2>
+        <div class="table-responsive mb-5">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Công cụ</th>
+                        <th>Giới hạn trần</th>
+                        <th>Giới hạn sàn</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Lãi suất tái cấp vốn</td>
+                        <td><i class="fas fa-check text-success"></i></td>
+                        <td></td>
+                        <td>Mức trần cho lãi suất liên ngân hàng.</td>
+                    </tr>
+                    <tr>
+                        <td>Lãi suất tái chiết khấu</td>
+                        <td></td>
+                        <td><i class="fas fa-check text-warning"></i> (yếu)</td>
+                        <td>Ít sử dụng hơn tín phiếu trong vai trò sàn.</td>
+                    </tr>
+                    <tr>
+                        <td>Lãi suất cho vay qua đêm</td>
+                        <td><i class="fas fa-check text-success"></i></td>
+                        <td></td>
+                        <td>Trần cao nhất, áp dụng cho vay khẩn cấp.</td>
+                    </tr>
+                    <tr>
+                        <td>Lãi suất thị trường mở (OMO)</td>
+                        <td></td>
+                        <td></td>
+                        <td>Hỗ trợ điều tiết trong hành lang lãi suất.</td>
+                    </tr>
+                    <tr>
+                        <td>Lãi suất tín phiếu NHNN</td>
+                        <td></td>
+                        <td><i class="fas fa-check text-warning"></i></td>
+                        <td>Mức sàn, khuyến khích mua tín phiếu.</td>
+                    </tr>
+                    <tr>
+                        <td>Lãi suất điều hành</td>
+                        <td></td>
+                        <td></td>
+                        <td>Định hướng tổng quát, không trực tiếp trần/sàn.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 3: Interest Rate Corridor and Other Methods -->
+        <h2 class="mb-4"><i class="fas fa-chart-line me-2"></i> Hành lang lãi suất và Các phương pháp điều hành lãi suất</h2>
+        <ul class="nav nav-tabs mb-3" id="interestRateTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="corridor-tab" data-bs-toggle="tab" data-bs-target="#corridor" type="button" role="tab" aria-controls="corridor" aria-selected="true">Hành lang lãi suất</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="other-methods-tab" data-bs-toggle="tab" data-bs-target="#other-methods" type="button" role="tab" aria-controls="other-methods" aria-selected="false">Phương pháp khác</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="interestRateTabContent">
+            <!-- Tab 1: Interest Rate Corridor -->
+            <div class="tab-pane fade show active" id="corridor" role="tabpanel" aria-labelledby="corridor-tab">
+                <h4><i class="fas fa-road me-2"></i> Hành lang lãi suất (Interest Rate Corridor)</h4>
+                <p><strong>Định nghĩa:</strong> Cơ chế mà Ngân hàng Trung ương thiết lập mức trần (ceiling rate) và mức sàn (floor rate) để định hướng lãi suất liên ngân hàng dao động trong khoảng nhất định.</p>
+                <p><strong>Cơ chế hoạt động:</strong></p>
+                <ul>
+                    <li><strong>Trần:</strong> Lãi suất cho vay (tái cấp vốn/qua đêm), ngăn lãi suất thị trường tăng quá cao.</li>
+                    <li><strong>Sàn:</strong> Lãi suất tiền gửi/tín phiếu, ngăn lãi suất giảm quá thấp.</li>
+                    <li><strong>Mục tiêu:</strong> Lãi suất liên ngân hàng được điều chỉnh qua thị trường mở (OMO).</li>
+                </ul>
+                <p><strong>Ví dụ tại Việt Nam:</strong> Năm 2023, trần là lãi suất tái cấp vốn (4,5%) và qua đêm (5-6%), sàn là lãi suất tín phiếu (3-4%).</p>
+                <h5>Các quốc gia áp dụng</h5>
+                <ul>
+                    <li><strong>ECB (Châu Âu):</strong> Trần là lãi suất cho vay cận biên (4,5%), sàn là lãi suất tiền gửi (3%).</li>
+                    <li><strong>Fed (Mỹ):</strong> Trần là lãi suất chiết khấu, sàn là lãi suất dự trữ (5,4%).</li>
+                    <li><strong>BoE (Anh):</strong> Trần là Bank Rate (5,25%), sàn là lãi suất tiền gửi.</li>
+                    <li><strong>BoJ (Nhật):</strong> Trần là lãi suất cho vay (0,25%), sàn là lãi suất âm (-0,1%).</li>
+                    <li><strong>PBoC (Trung Quốc):</strong> Trần là lãi suất tái cấp vốn, sàn là lãi suất dự trữ.</li>
+                    <li><strong>Việt Nam:</strong> Như trên.</li>
+                    <li>Khác: Úc, Canada, Ấn Độ, Brazil, Thái Lan, Indonesia.</li>
+                </ul>
+            </div>
+
+            <!-- Tab 2: Other Interest Rate Management Methods -->
+            <div class="tab-pane fade" id="other-methods" role="tabpanel" aria-labelledby="other-methods-tab">
+                <h4><i class="fas fa-tools me-2"></i> Các phương pháp điều hành lãi suất khác</h4>
+                <div class="accordion" id="otherMethodsAccordion">
+                    <!-- Method 1: Target Rate -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#methodOne" aria-expanded="true" aria-controls="methodOne">
+                                <i class="fas fa-bullseye icon"></i> 1. Lãi suất mục tiêu (Target Rate)
+                            </button>
+                        </h2>
+                        <div id="methodOne" class="accordion-collapse collapse show" data-bs-parent="#otherMethodsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Định nghĩa:</strong> Đặt một mức lãi suất cụ thể làm tham chiếu, điều chỉnh qua thị trường mở.</p>
+                                <p><strong>Ưu điểm:</strong> Tín hiệu rõ ràng, linh hoạt.</p>
+                                <p><strong>Nhược điểm:</strong> Yêu cầu thị trường tài chính phát triển.</p>
+                                <p class="example"><strong>Ví dụ:</strong> Fed (Mỹ) đặt lãi suất quỹ liên bang 5,25-5,5% (2023).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Method 2: Floor System -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#methodTwo" aria-expanded="false" aria-controls="methodTwo">
+                                <i class="fas fa-layer-group icon"></i> 2. Hệ thống sàn lãi suất (Floor System)
+                            </button>
+                        </h2>
+                        <div id="methodTwo" class="accordion-collapse collapse" data-bs-parent="#otherMethodsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Định nghĩa:</strong> Tạo sàn bằng lãi suất tiền gửi dự trữ, cung thanh khoản dư thừa.</p>
+                                <p><strong>Ưu điểm:</strong> Đơn giản, giảm biến động lãi suất.</p>
+                                <p><strong>Nhược điểm:</strong> Có thể tăng cung tiền quá mức.</p>
+                                <p class="example"><strong>Ví dụ:</strong> Fed (Mỹ) dùng lãi suất dự trữ 5,4% (2023).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Method 3: Direct Control -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#methodThree" aria-expanded="false" aria-controls="methodThree">
+                                <i class="fas fa-gavel icon"></i> 3. Kiểm soát trực tiếp lãi suất
+                            </button>
+                        </h2>
+                        <div id="methodThree" class="accordion-collapse collapse" data-bs-parent="#otherMethodsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Định nghĩa:</strong> Áp đặt trần/sàn lãi suất bằng quy định hành chính.</p>
+                                <p><strong>Ưu điểm:</strong> Hiệu quả ngắn hạn, hỗ trợ ngành ưu tiên.</p>
+                                <p><strong>Nhược điểm:</strong> Làm méo mó thị trường.</p>
+                                <p class="example"><strong>Ví dụ:</strong> Việt Nam áp trần lãi suất huy động trước 2010.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Method 4: Negative Interest Rate -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#methodFour" aria-expanded="false" aria-controls="methodFour">
+                                <i class="fas fa-minus-circle icon"></i> 4. Lãi suất âm (NIRP)
+                            </button>
+                        </h2>
+                        <div id="methodFour" class="accordion-collapse collapse" data-bs-parent="#otherMethodsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Định nghĩa:</strong> Đặt lãi suất dưới 0% để khuyến khích cho vay.</p>
+                                <p><strong>Ưu điểm:</strong> Thúc đẩy chi tiêu trong suy thoái.</p>
+                                <p><strong>Nhược điểm:</strong> Giảm lợi nhuận ngân hàng.</p>
+                                <p class="example"><strong>Ví dụ:</strong> BoJ (Nhật) áp lãi suất -0,1% (2016).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Method 5: Yield Curve Control -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#methodFive" aria-expanded="false" aria-controls="methodFive">
+                                <i class="fas fa-chart-area icon"></i> 5. Kiểm soát đường cong lợi suất (YCC)
+                            </button>
+                        </h2>
+                        <div id="methodFive" class="accordion-collapse collapse" data-bs-parent="#otherMethodsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Định nghĩa:</strong> Giữ lợi suất trái phiếu dài hạn ở mức cố định.</p>
+                                <p><strong>Ưu điểm:</strong> Ổn định chi phí vay dài hạn.</p>
+                                <p><strong>Nhược điểm:</strong> Tốn kém nếu thị trường biến động.</p>
+                                <p class="example"><strong>Ví dụ:</strong> BoJ giữ lợi suất trái phiếu 10 năm quanh 0%.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Method 6: Forward Guidance -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#methodSix" aria-expanded="false" aria-controls="methodSix">
+                                <i class="fas fa-sign icon"></i> 6. Hướng dẫn định hướng (Forward Guidance)
+                            </button>
+                        </h2>
+                        <div id="methodSix" class="accordion-collapse collapse" data-bs-parent="#otherMethodsAccordion">
+                            <div class="accordion-body">
+                                <p><strong>Định nghĩa:</strong> Công bố định hướng lãi suất tương lai để định hình kỳ vọng.</p>
+                                <p><strong>Ưu điểm:</strong> Minh bạch, không cần can thiệp trực tiếp.</p>
+                                <p><strong>Nhược điểm:</strong> Phụ thuộc vào uy tín ngân hàng trung ương.</p>
+                                <p class="example"><strong>Ví dụ:</strong> Fed cam kết giữ lãi suất 0% đến khi lạm phát 2% (2020).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
